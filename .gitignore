@@ -1,0 +1,12 @@
+# Development files
+.verification-report.txt
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

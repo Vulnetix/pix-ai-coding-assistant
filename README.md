@@ -116,20 +116,17 @@ You should see:
 
 ## Installation
 
-### Option 1: Install from GitHub (Recommended)
+Add the plugin directly from GitHub:
 
 ```bash
-/plugin marketplace add Vulnetix/Vulnetix
-/plugin install vulnetix@vulnetix-plugins
+/plugin add https://github.com/Vulnetix/claude-code-plugin
 ```
 
-### Option 2: Install from Local Directory
-
-If you've cloned the Vulnetix repository:
+Or clone and add locally:
 
 ```bash
-/plugin add /home/chris/GitHub/Vulnetix/claude-code-plugin
-/plugin enable vulnetix
+git clone https://github.com/Vulnetix/claude-code-plugin.git
+/plugin add /path/to/claude-code-plugin
 ```
 
 ### Verify Installation
