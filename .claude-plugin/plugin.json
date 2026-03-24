@@ -6,7 +6,7 @@
     "name": "Vulnetix",
     "url": "https://vulnetix.com"
   },
-  "repository": "https://github.com/Vulnetix/Vulnetix",
+  "repository": "https://github.com/Vulnetix/claude-code-plugin",
   "license": "Apache-2.0",
   "keywords": ["security", "vulnerability", "dependency", "scanning", "exploit", "cve", "sbom", "sca"]
 }

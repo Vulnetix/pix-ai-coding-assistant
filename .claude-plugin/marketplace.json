@@ -1,0 +1,13 @@
+{
+  "name": "vulnetix-plugins",
+  "owner": { "name": "Vulnetix" },
+  "plugins": [
+    {
+      "name": "vulnetix",
+      "source": ".",
+      "description": "Vulnerability intelligence for Claude Code — scans dependencies on commit, searches packages for risk data, analyzes exploits, and proposes fixes via the Vulnetix VDB API.",
+      "version": "1.0.0",
+      "author": { "name": "Vulnetix" }
+    }
+  ]
+}

@@ -80,8 +80,8 @@ curl -fsSL https://cli.vulnetix.com/install.sh | bash
 # Homebrew
 brew install vulnetix/tap/vulnetix
 
-# Cargo
-cargo install vulnetix-cli
+# Go
+go install github.com/AuditRay/vulnetix/cli@latest
 ```
 
 **Windows:**
@@ -106,27 +106,37 @@ This will open a browser window for authentication. After logging in, verify you
 vulnetix vdb status
 ```
 
-You should see:
-```
-✓ API Status: healthy
-✓ Authenticated: true
+You should see JSON output with:
+```json
+{
+  "api": { "status": "healthy" },
+  "auth": { "status": "ok", "method": "apikey" }
+}
 ```
 
 ---
 
 ## Installation
 
-Clone the repository and add it locally:
+### Option A: Marketplace (Recommended)
 
-```bash
-git clone https://github.com/Vulnetix/claude-code-plugin.git
-/plugin add /path/to/claude-code-plugin
+Add the marketplace and install the plugin:
+
+```
+/plugin marketplace add Vulnetix/claude-code-plugin
+/plugin install vulnetix@vulnetix-plugins
 ```
 
-For example, if you cloned it to your home directory:
+### Option B: Clone Locally
+
+Clone the repository and add it directly:
+
 ```bash
-cd ~
-git clone https://github.com/Vulnetix/claude-code-plugin.git
+git clone https://github.com/Vulnetix/claude-code-plugin.git ~/claude-code-plugin
+```
+
+Then in Claude Code:
+```
 /plugin add ~/claude-code-plugin
 ```
 
@@ -303,15 +313,13 @@ The plugin supports 15+ dependency ecosystems:
 
 ## Contributing
 
-This plugin is part of the [Vulnetix monorepo](https://github.com/Vulnetix/Vulnetix).
-
-Report issues or suggest features in the main repository.
+Report issues or suggest features at [github.com/Vulnetix/claude-code-plugin](https://github.com/Vulnetix/claude-code-plugin).
 
 ---
 
 ## License
 
-Apache-2.0 — see [LICENSE](../LICENSE) for details.
+Apache-2.0 — see [LICENSE](LICENSE) for details.
 
 ---
 

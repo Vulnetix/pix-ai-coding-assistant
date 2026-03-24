@@ -47,9 +47,9 @@ if [[ -z "$STATUS_JSON" ]]; then
 fi
 
 API_STATUS=$(echo "$STATUS_JSON" | jq -r '.api.status // "unhealthy"' 2>/dev/null)
-AUTHENTICATED=$(echo "$STATUS_JSON" | jq -r '.auth.authenticated // false' 2>/dev/null)
+AUTH_STATUS=$(echo "$STATUS_JSON" | jq -r '.auth.status // "unknown"' 2>/dev/null)
 
-if [[ "$API_STATUS" != "healthy" ]] || [[ "$AUTHENTICATED" != "true" ]]; then
+if [[ "$API_STATUS" != "healthy" ]] || [[ "$AUTH_STATUS" != "ok" ]]; then
     echo '{"systemMessage": "⚠️ Vulnetix: API unavailable or not authenticated. Run `vulnetix auth login` to enable vulnerability scanning."}'
     exit 0
 fi
@@ -90,7 +90,7 @@ TOTAL_VULNS=0
 SCANNED_FILES=()
 
 for manifest in "${MANIFESTS_TO_SCAN[@]}"; do
-    SCAN_OUTPUT=$(vulnetix scan --file "$manifest" -f json 2>/dev/null)
+    SCAN_OUTPUT=$(vulnetix scan --file "$manifest" -f cdx17 2>/dev/null)
     
     if [[ -z "$SCAN_OUTPUT" ]]; then
         continue
@@ -130,7 +130,7 @@ if [[ $TOTAL_VULNS -gt 0 ]]; then
     MESSAGE="${MESSAGE%,}"  # Remove trailing comma
     MESSAGE="$MESSAGE (in: $FILES_LIST). Consider reviewing with \`/vulnetix:fix <vuln-id>\` before committing."
     
-    echo "{\"systemMessage\": \"$MESSAGE\"}"
+    jq -n --arg msg "$MESSAGE" '{"systemMessage": $msg}'
 fi
 
 exit 0
