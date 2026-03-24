@@ -116,17 +116,18 @@ You should see:
 
 ## Installation
 
-Add the plugin directly from GitHub:
-
-```bash
-/plugin add https://github.com/Vulnetix/claude-code-plugin
-```
-
-Or clone and add locally:
+Clone the repository and add it locally:
 
 ```bash
 git clone https://github.com/Vulnetix/claude-code-plugin.git
 /plugin add /path/to/claude-code-plugin
+```
+
+For example, if you cloned it to your home directory:
+```bash
+cd ~
+git clone https://github.com/Vulnetix/claude-code-plugin.git
+/plugin add ~/claude-code-plugin
 ```
 
 ### Verify Installation
