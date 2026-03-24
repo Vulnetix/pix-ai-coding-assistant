@@ -137,7 +137,7 @@ git clone https://github.com/Vulnetix/claude-code-plugin.git ~/claude-code-plugi
 
 Then in Claude Code:
 ```
-/plugin add ~/claude-code-plugin
+/plugin add ~/claude-code-plugin/vulnetix
 ```
 
 ### Verify Installation
@@ -319,7 +319,7 @@ Report issues or suggest features at [github.com/Vulnetix/claude-code-plugin](ht
 
 ## License
 
-Apache-2.0 — see [LICENSE](LICENSE) for details.
+Apache-2.0 — see [LICENSE](vulnetix/LICENSE) for details.
 
 ---
 
