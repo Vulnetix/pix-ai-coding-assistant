@@ -88,10 +88,11 @@ Four deterministic commands give you raw VDB data without LLM analysis. Plus a b
 
 ## Persistent Vulnerability Memory
 
-All findings, decisions, and scan history persist in the `.vulnetix/` directory. A structured YAML memory file tracks every vulnerability from discovery through resolution, while CycloneDX SBOMs and cached PoC source code provide audit-ready artifacts.
+All findings, decisions, and scan history persist in the `.vulnetix/` directory. A structured YAML memory file tracks every vulnerability from discovery through resolution, while package search results, CycloneDX SBOMs, and cached PoC source code provide audit-ready artifacts.
 
 <ul>
   <li>Structured memory file</li>
+  <li>Package search results</li>
   <li>CycloneDX SBOMs</li>
   <li>PoC source caching</li>
   <li>Decision tracking</li>
