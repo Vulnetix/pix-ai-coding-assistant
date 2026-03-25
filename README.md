@@ -242,6 +242,26 @@ Then in Claude Code:
 /plugin add ~/claude-code-plugin/vulnetix
 ```
 
+### Upgrading
+
+#### Marketplace Install
+
+```
+/plugin update vulnetix
+```
+
+#### Local Clone
+
+```bash
+cd ~/claude-code-plugin && git pull
+```
+
+Then in Claude Code:
+```
+/plugin remove vulnetix
+/plugin add ~/claude-code-plugin/vulnetix
+```
+
 ### Verify Installation
 
 Check that the plugin is loaded:
@@ -258,7 +278,13 @@ Check that hooks are registered:
 /hooks
 ```
 
-You should see the `PreToolUse` hook for Bash commands.
+You should see hooks for:
+- `PreToolUse` (Bash) — pre-commit vulnerability scanning
+- `PreToolUse` (Edit|Write) — manifest dependency security gate
+- `PostToolUse` (Bash) — auto-scan after dependency installs
+- `SessionStart` — vulnerability dashboard on session start
+- `Stop` — unresolved vulnerability reminder
+- `UserPromptSubmit` — auto-detect CVE/GHSA IDs in messages
 
 ---
 
@@ -282,9 +308,21 @@ The hook activates automatically when you use `git commit` commands. No configur
 
 3. Claude will show a system message if vulnerabilities are found:
    ```
-   Vulnetix scan found 5 vulnerabilities in staged dependencies:
-   2 high, 3 medium (in: package.json, package-lock.json).
-   Consider reviewing with `/vulnetix:fix <vuln-id>` before committing.
+   🔍 Vulnetix pre-commit scan results:
+
+   3 new vulnerabilities:
+   • CVE-2024-1234 (critical) — express@4.17.1 in package.json
+   • CVE-2024-5678 (high) — lodash@4.17.20 in package.json
+   • GHSA-xxxx-yyyy (medium) — jsonwebtoken@8.5.1 in package-lock.json
+
+   2 previously tracked:
+   • CVE-2023-9999 — Fixed (Dependabot PR #187 merged)
+   • CVE-2023-8888 — Risk accepted
+
+   Manifests scanned: package.json (npm), package-lock.json (npm)
+   SBOMs saved to .vulnetix/scans/
+
+   Review with `/vulnetix:fix <vuln-id>` or `/vulnetix:exploits <vuln-id>`.
    ```
 
 4. The commit proceeds regardless (informational only).
