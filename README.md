@@ -4,7 +4,7 @@ Vulnerability intelligence for Claude Code — scans dependencies on commit, sea
 
 ## Features
 
-### 🪝 Pre-Commit Vulnerability Scanning
+### Pre-Commit Vulnerability Scanning
 
 Automatically scans staged dependency manifest files when you run `git commit` commands. The hook:
 
@@ -13,7 +13,7 @@ Automatically scans staged dependency manifest files when you run `git commit` c
 - Reports vulnerability counts by severity (critical/high/medium/low)
 - **Never blocks commits** — informational only
 
-### 🔍 Three Interactive Skills
+### Six Interactive Skills
 
 #### 1. `/vulnetix:package-search <package-name>`
 
@@ -63,6 +63,108 @@ Get fix intelligence and propose concrete remediation steps for your repository.
 - Proposes exact edits with version bumps
 - Assesses breaking change risk
 - Suggests test commands and re-scanning to verify the fix
+
+#### 4. `/vulnetix:vuln <vuln-id or package-name>`
+
+Look up a vulnerability by ID, or list all vulnerabilities for a package.
+
+**Examples:**
+```
+/vulnetix:vuln CVE-2021-44228
+/vulnetix:vuln express
+```
+
+**What it does:**
+- Auto-detects whether the argument is a vuln ID or package name
+- **Vuln ID mode**: fetches CVSS v2/v3/v4 scores, EPSS, CISA KEV status, and checks repo impact
+- **Package mode**: lists all known vulns with an "Affects You?" column comparing your installed version
+- Accepts 78+ identifier formats (CVE, GHSA, PYSEC, RUSTSEC, SNYK, etc.)
+- Supports pagination via natural language in package mode
+- Cross-references with Dependabot alerts if available
+
+#### 5. `/vulnetix:exploits-search [query]`
+
+Search for exploits across all vulnerabilities with filtering by ecosystem, severity, source, and EPSS.
+
+**Examples:**
+```
+/vulnetix:exploits-search --ecosystem npm --severity CRITICAL
+/vulnetix:exploits-search --in-kev --min-epss 0.7
+/vulnetix:exploits-search -q "remote code execution"
+```
+
+**What it does:**
+- Searches the VDB for vulnerabilities with known exploits
+- Filters by ecosystem, severity, exploit source (ExploitDB, Metasploit, Nuclei, etc.), EPSS, and CISA KEV
+- Auto-detects your repository's ecosystem as a default filter
+- Shows exploitation maturity level (NONE/POC/WEAPONIZED/ACTIVE/WIDESPREAD)
+- Flags CrowdSec live sightings and ransomware associations
+- Recommends `/vulnetix:exploits` for deep analysis of individual results
+
+#### 6. `/vulnetix:remediation <vuln-id>`
+
+Get a context-aware remediation plan for a vulnerability with fix verification steps.
+
+**Example:**
+```
+/vulnetix:remediation CVE-2021-44228
+```
+
+**What it does:**
+- Auto-detects your ecosystem, package manager, installed version, and container image
+- Fetches registry fixes, source patches, distribution advisories, and workarounds
+- Provides CWE-specific remediation strategies
+- Includes CrowdSec live threat intelligence (active exploitation, source countries)
+- Shows workaround effectiveness scores when no immediate fix is available
+- Generates verification commands per package manager
+
+### Four Slash Commands (Direct CLI Access)
+
+Slash commands are deterministic thin wrappers around VDB CLI subcommands. Unlike skills (which provide rich LLM-guided analysis), these run the CLI command directly and display the output. Use them when you want raw VDB data without additional analysis.
+
+#### `/vulnetix:vdb-vuln <vuln-id>`
+
+Look up a vulnerability by ID.
+
+```
+/vulnetix:vdb-vuln CVE-2021-44228
+/vulnetix:vdb-vuln GHSA-jfh8-3a1q-hjz9
+```
+
+#### `/vulnetix:vdb-vulns <package-name> [flags]`
+
+List all known vulnerabilities for a package.
+
+```
+/vulnetix:vdb-vulns express
+/vulnetix:vdb-vulns lodash --limit 20
+```
+
+Flags: `--limit`, `--offset`
+
+#### `/vulnetix:vdb-exploits-search [flags]`
+
+Search for exploits across all vulnerabilities with filtering.
+
+```
+/vulnetix:vdb-exploits-search --ecosystem npm --severity CRITICAL
+/vulnetix:vdb-exploits-search --in-kev --min-epss 0.7 --sort epss
+/vulnetix:vdb-exploits-search --source metasploit -q "remote code execution"
+```
+
+Flags: `--ecosystem`, `--source`, `--severity`, `--in-kev`, `--min-epss`, `-q`, `--sort`, `--limit`, `--offset`
+
+#### `/vulnetix:vdb-remediation <vuln-id> [flags]`
+
+Get a context-aware remediation plan (V2 API).
+
+```
+/vulnetix:vdb-remediation CVE-2021-44228
+/vulnetix:vdb-remediation CVE-2021-44228 --ecosystem maven --package-name log4j-core --current-version 2.14.1
+/vulnetix:vdb-remediation CVE-2024-XXXXX --include-guidance --include-verification-steps
+```
+
+Flags: `--ecosystem`, `--package-name`, `--current-version`, `--package-manager`, `--purl`, `--container-image`, `--os`, `--vendor`, `--product`, `--include-guidance`, `--include-verification-steps`
 
 ---
 
@@ -180,7 +282,7 @@ The hook activates automatically when you use `git commit` commands. No configur
 
 3. Claude will show a system message if vulnerabilities are found:
    ```
-   🔍 Vulnetix scan found 5 vulnerabilities in staged dependencies:
+   Vulnetix scan found 5 vulnerabilities in staged dependencies:
    2 high, 3 medium (in: package.json, package-lock.json).
    Consider reviewing with `/vulnetix:fix <vuln-id>` before committing.
    ```
@@ -227,6 +329,43 @@ Claude will:
 4. Ask if you want to apply the fix
 5. Suggest testing and re-scanning
 
+#### Look Up a Vulnerability or Package
+
+```
+/vulnetix:vuln CVE-2021-44228
+/vulnetix:vuln express
+```
+
+Claude will:
+1. Auto-detect whether you provided a vuln ID or package name
+2. Fetch vulnerability details or list all known vulns for the package
+3. Check repo impact and installed versions
+4. Suggest next steps (exploits, fix, remediation)
+
+#### Search for Exploits
+
+```
+/vulnetix:exploits-search --ecosystem npm --severity CRITICAL
+```
+
+Claude will:
+1. Auto-detect your repo's ecosystem if not specified
+2. Search for vulnerabilities with known exploits
+3. Show exploitation maturity, EPSS, KEV status, and exploit sources
+4. Flag live CrowdSec sightings and ransomware associations
+
+#### Get a Remediation Plan
+
+```
+/vulnetix:remediation CVE-2021-44228
+```
+
+Claude will:
+1. Auto-detect your ecosystem, package manager, and installed version
+2. Fetch registry fixes, source patches, workarounds, and CWE guidance
+3. Present verification commands per package manager
+4. Offer to apply manifest edits
+
 ---
 
 ## Troubleshooting
@@ -263,16 +402,26 @@ If the API is unhealthy, check your internet connection or visit [status.vulneti
 
 ### Skill Commands Not Working
 
-Ensure the skill is invoked correctly:
+Ensure the command is invoked correctly:
 ```
+# Skills (rich analysis)
 /vulnetix:package-search <package-name>
 /vulnetix:exploits <vuln-id>
 /vulnetix:fix <vuln-id>
+/vulnetix:vuln <vuln-id or package-name>
+/vulnetix:exploits-search [query]
+/vulnetix:remediation <vuln-id>
+
+# Slash commands (direct CLI access)
+/vulnetix:vdb-vuln <vuln-id>
+/vulnetix:vdb-vulns <package-name>
+/vulnetix:vdb-exploits-search [flags]
+/vulnetix:vdb-remediation <vuln-id> [flags]
 ```
 
 **Not:**
 ```
-/vulnetix package-search <package-name>  ❌ (missing colon)
+/vulnetix package-search <package-name>  <-- missing colon
 ```
 
 ### Hook Scanning Takes Too Long
