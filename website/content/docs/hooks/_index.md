@@ -10,7 +10,7 @@ The Vulnetix plugin registers six hooks with Claude Code. Each hook fires on a s
 
 | Hook | Event | Matcher | Timeout | Purpose |
 |------|-------|---------|---------|---------|
-| [Pre-Commit Scan](pre-commit-scan) | PreToolUse | Bash | 120s | Scans staged manifest files for vulnerabilities |
+| [Pre-Commit Scan](pre-commit-scan) | PreToolUse | Bash | 30s | Extracts packages from staged manifests and runs background VDB searches |
 | [Post-Install Scan](post-install-scan) | PostToolUse | Bash | 120s | Scans after dependency install commands |
 | [Manifest Edit Gate](manifest-edit-scan) | PreToolUse | Edit\|Write | 30s | Checks packages being added/modified for risk |
 | [Session Summary](session-summary) | SessionStart | -- | 10s | Displays vulnerability dashboard on session start |
@@ -31,12 +31,12 @@ Claude Code reads this and injects it into the conversation context, making the 
 
 **Minimal dependencies.** Hooks require only two external tools:
 
-- **jq** -- for JSON processing (CycloneDX SBOM parsing, systemMessage construction)
+- **jq** -- for JSON processing (manifest parsing, API response handling, systemMessage construction)
 - **vulnetix CLI** -- authenticated with a Vulnetix account for API access
 
 If either dependency is missing, hooks exit silently rather than producing errors.
 
-**Data directory.** Hooks that generate artifacts (SBOMs, memory updates) write to `.vulnetix/` in the project root. This directory is automatically added to `.gitignore` on first use.
+**Data directory.** Hooks that generate artifacts (package search results, SBOMs, memory updates) write to `.vulnetix/` in the project root. This directory is automatically added to `.gitignore` on first use.
 
 ## How hooks are registered
 

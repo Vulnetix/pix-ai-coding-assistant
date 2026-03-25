@@ -80,15 +80,15 @@ The colon separates the plugin name from the skill/command name. A space between
 
 **Possible causes:**
 
-- Too many manifest files staged in a single commit
-- Slow network connection to the Vulnetix API
-- Large dependency trees producing slow SBOM generation
+- Slow network connection to the Vulnetix API (affects API health check before background search launches)
+- Too many manifest files staged in a single commit (package extraction is local but scales with file size)
+- Large dependency trees producing slow SBOM generation (post-install hook only)
 
 **Fixes:**
 
-- Reduce the number of staged manifest files per commit. Stage dependency changes separately from code changes.
 - Check your network connectivity: `vulnetix vdb status -o json`
-- The pre-commit hook has a 120-second timeout. If you consistently hit this limit, consider committing fewer manifests at once.
+- The pre-commit hook runs package searches in the background and should not cause significant delay. If you see lag, it is likely from the CLI discovery or API health check before the background process launches.
+- The post-install hook has a 120-second timeout. If you consistently hit this limit, consider installing fewer packages at once.
 
 ## Memory File Issues
 
