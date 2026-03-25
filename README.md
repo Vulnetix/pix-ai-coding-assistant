@@ -222,10 +222,15 @@ You should see JSON output with:
 
 ### Option A: Marketplace (Recommended)
 
-Add the marketplace and install the plugin:
+Add the marketplace:
 
 ```
 /plugin marketplace add Vulnetix/claude-code-plugin
+```
+
+Then install the plugin:
+
+```
 /plugin install vulnetix@vulnetix-plugins
 ```
 
