@@ -1,0 +1,62 @@
+baseURL = "https://claude-docs.vdb.vulnetix.com/"
+languageCode = "en-us"
+title = "Vulnetix"
+
+[module]
+  [[module.imports]]
+    path = "github.com/imfing/hextra"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[markup.highlight]
+  noClasses = false
+
+[[menu.main]]
+  name = "Docs"
+  pageRef = "/docs"
+  weight = 1
+
+[[menu.main]]
+  name = "GitHub"
+  url = "https://github.com/Vulnetix/claude-code-plugin"
+  weight = 5
+  [menu.main.params]
+    icon = "github"
+
+[[menu.main]]
+  name = "CLI Docs"
+  url = "https://docs.cli.vulnetix.com"
+  weight = 6
+  [menu.main.params]
+    icon = "book-open"
+
+[[menu.main]]
+  name = "API Docs"
+  url = "https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec"
+  weight = 7
+  [menu.main.params]
+    icon = "document-download"
+
+[params]
+  description = "Vulnerability intelligence for Claude Code — scans dependencies on commit, searches packages for risk data, analyzes exploits, and proposes fixes via the Vulnetix VDB API."
+  images = ["https://www.vulnetix.com/images/og.png"]
+
+  [params.social]
+
+  [params.navbar]
+    displayTitle = true
+    displayLogo = true
+
+    [params.navbar.logo]
+      path = "favicon-32x32.png"
+      dark = "favicon-32x32.png"
+      width = "24"
+      height = "24"
+
+  [params.footer]
+    displayPoweredBy = false
+
+  [params.editURL]
+    enable = true
+    base = "https://github.com/Vulnetix/claude-code-plugin/edit/main/website/content"

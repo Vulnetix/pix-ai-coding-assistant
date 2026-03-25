@@ -10,3 +10,12 @@
 *.swp
 *.swo
 *~
+
+# Environment & credentials
+.env
+credentials.json
+
+# Hugo
+website/public/
+website/resources/
+website/.hugo_build.lock

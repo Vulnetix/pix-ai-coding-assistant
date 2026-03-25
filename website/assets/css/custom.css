@@ -1,0 +1,337 @@
+/* ==========================================================================
+   Vulnetix Brand Design System
+   ========================================================================== */
+
+:root {
+  /* Vulnetix Brand Palette — Light */
+  --vx-primary: #006860;
+  --vx-secondary: #00B8A5;
+  --vx-surface-variant: #FDE0B5;
+  --vx-text: #002E29;
+  --vx-success: #2E7D6F;
+  --vx-warning: #F5B82E;
+  --vx-error: #D64550;
+  --vx-info: #4A90A4;
+  --vx-accent-purple: #A78EBF;
+  --vx-shadow-1: rgba(0, 46, 41, 0.08);
+  --vx-shadow-2: rgba(0, 46, 41, 0.05);
+  --vx-shadow-3: rgba(0, 46, 41, 0.03);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vx-primary: #00E0C9;
+    --vx-secondary: #66DCC8;
+    --vx-surface-variant: #2D2D2D;
+    --vx-text: #FFFFFF;
+    --vx-success: #4EC9A3;
+    --vx-warning: #FFD54F;
+    --vx-error: #FF6B6B;
+    --vx-info: #5BB8D4;
+    --vx-accent-purple: #A78EBF;
+    --vx-shadow-1: rgba(0, 46, 41, 0.2);
+    --vx-shadow-2: rgba(0, 46, 41, 0.14);
+    --vx-shadow-3: rgba(0, 46, 41, 0.12);
+  }
+}
+
+/* Override Hextra primary with Vulnetix teal */
+:root {
+  --primary-hue: 174;
+  --primary-saturation: 100%;
+}
+
+/* ==========================================================================
+   Homepage — Feature Sections
+   ========================================================================== */
+
+.vx-feature-section {
+  padding: 3rem 2.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 56rem;
+}
+
+.vx-feature-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.vx-feature-section p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  max-width: 48rem;
+}
+
+.vx-feature-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.vx-feature-section ul li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vx-feature-section ul li {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.vx-feature-section .vx-feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--vx-primary);
+  text-decoration: none;
+}
+
+.vx-feature-section .vx-feature-link:hover {
+  text-decoration: underline;
+}
+
+/* Feature gradient backgrounds */
+.vx-feature-vdb {
+  background: linear-gradient(135deg, rgba(74, 144, 164, 0.08) 0%, rgba(0, 104, 96, 0.04) 100%);
+  border: 1px solid rgba(74, 144, 164, 0.12);
+}
+
+.vx-feature-scan {
+  background: linear-gradient(135deg, rgba(0, 184, 165, 0.08) 0%, rgba(46, 125, 111, 0.04) 100%);
+  border: 1px solid rgba(0, 184, 165, 0.12);
+}
+
+.vx-feature-cicd {
+  background: linear-gradient(135deg, rgba(167, 142, 191, 0.08) 0%, rgba(0, 104, 96, 0.04) 100%);
+  border: 1px solid rgba(167, 142, 191, 0.12);
+}
+
+.vx-feature-data {
+  background: linear-gradient(135deg, rgba(245, 184, 46, 0.08) 0%, rgba(0, 104, 96, 0.04) 100%);
+  border: 1px solid rgba(245, 184, 46, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vx-feature-vdb {
+    background: linear-gradient(135deg, rgba(91, 184, 212, 0.06) 0%, rgba(0, 224, 201, 0.03) 100%);
+    border-color: rgba(91, 184, 212, 0.15);
+  }
+
+  .vx-feature-scan {
+    background: linear-gradient(135deg, rgba(102, 220, 200, 0.06) 0%, rgba(78, 201, 163, 0.03) 100%);
+    border-color: rgba(102, 220, 200, 0.15);
+  }
+
+  .vx-feature-cicd {
+    background: linear-gradient(135deg, rgba(167, 142, 191, 0.06) 0%, rgba(0, 224, 201, 0.03) 100%);
+    border-color: rgba(167, 142, 191, 0.15);
+  }
+
+  .vx-feature-data {
+    background: linear-gradient(135deg, rgba(255, 213, 79, 0.06) 0%, rgba(0, 224, 201, 0.03) 100%);
+    border-color: rgba(255, 213, 79, 0.15);
+  }
+}
+
+/* ==========================================================================
+   Homepage — Footer Links
+   ========================================================================== */
+
+.vx-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  margin-top: 3rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 56rem;
+}
+
+.vx-footer-links a {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--vx-text);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.vx-footer-links a:hover {
+  opacity: 1;
+  color: var(--vx-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vx-footer-links {
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* ==========================================================================
+   Homepage — CTA Buttons
+   ========================================================================== */
+
+.vx-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.vx-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  background: var(--vx-primary);
+  color: white !important;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none !important;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.vx-btn-primary:hover {
+  background: #005850;
+  transform: translateY(-1px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vx-btn-primary {
+    background: var(--vx-primary);
+    color: #002E29 !important;
+  }
+
+  .vx-btn-primary:hover {
+    background: #00c9b4;
+  }
+}
+
+.vx-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: var(--vx-text) !important;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none !important;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.vx-btn-secondary:hover {
+  border-color: var(--vx-primary);
+  background: rgba(0, 104, 96, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vx-btn-secondary {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .vx-btn-secondary:hover {
+    border-color: var(--vx-primary);
+    background: rgba(0, 224, 201, 0.06);
+  }
+}
+
+.vx-subtle-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--vx-text);
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.vx-subtle-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Homepage — Hero Spacer
+   ========================================================================== */
+
+.vx-hero-spacer {
+  margin-top: 5rem;
+}
+
+@media (max-width: 768px) {
+  .vx-hero-spacer {
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vx-hero-spacer {
+    margin-top: 2rem;
+  }
+}
+
+/* ==========================================================================
+   Homepage — Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .vx-feature-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .vx-feature-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .vx-feature-section p {
+    font-size: 1rem;
+  }
+
+  .vx-feature-section ul li {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .vx-feature-section ul {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vx-feature-section {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .vx-feature-section h2 {
+    font-size: 1.375rem;
+  }
+
+  .vx-cta-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
