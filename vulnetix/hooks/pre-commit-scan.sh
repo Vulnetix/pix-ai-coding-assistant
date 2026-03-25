@@ -2,8 +2,8 @@
 set -uo pipefail
 
 # Pre-commit vulnerability scan hook for Vulnetix Claude Code Plugin
-# Intercepts git commit commands, scans staged manifest files, and maintains
-# .vulnetix/memory.yaml with vulnerability state and manifest/SBOM tracking.
+# Intercepts git commit commands, extracts packages from staged manifest files,
+# and launches background VDB package searches that don't block the commit.
 # Always exits 0 (never blocks commits) — informational only.
 #
 # Tooling philosophy (applies to all hooks, skills, and commands):
@@ -15,8 +15,15 @@ set -uo pipefail
 #   Complex:  uv run --with <deps> > python3 stdlib > manual analysis
 #   Rule:     Never assume any runtime; always check with command -v first
 
-# Required: jq for JSON processing (CycloneDX parsing, systemMessage construction)
+# Required: jq for JSON processing
 if ! command -v jq &>/dev/null; then
+    exit 0
+fi
+
+# Read JSON from stdin and check for git commit early (fast exit path)
+INPUT=$(cat)
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+if [[ ! "$COMMAND" =~ git[[:space:]]+commit ]]; then
     exit 0
 fi
 
@@ -59,59 +66,88 @@ manifest_to_ecosystem() {
     esac
 }
 
+# --- Package extraction from staged file content ---
+
+# Extract package name/version pairs from a staged manifest file.
+# Returns tab-separated "name\tversion" lines.
+# Handles source manifests and select lock files; skips unparseable formats.
+extract_packages_from_staged() {
+    local file_path="$1"
+    local filename
+    filename=$(basename "$file_path")
+
+    # Read staged content (falls back to working copy)
+    local content
+    content=$(git show ":${file_path}" 2>/dev/null || cat "$file_path" 2>/dev/null)
+    [[ -z "$content" ]] && return
+
+    case "$filename" in
+        package.json)
+            echo "$content" | jq -r '
+                [(.dependencies // {}), (.devDependencies // {})] | add // {} |
+                to_entries[] | "\(.key)\t\(.value | gsub("[\\^~>=<]"; ""))"
+            ' 2>/dev/null
+            ;;
+        requirements.txt)
+            echo "$content" | grep -v '^\s*#\|^\s*-\|^\s*$' | \
+                sed 's/\s*#.*//' | \
+                sed 's/\[.*\]//' | \
+                awk -F'[><=!~; ]+' '{
+                    pkg=$1; ver="unknown"
+                    if (NF > 1 && $2 != "") ver=$2
+                    if (pkg != "") print pkg "\t" ver
+                }' 2>/dev/null
+            ;;
+        go.mod)
+            echo "$content" | awk '
+                /^require \(/ { in_block=1; next }
+                in_block && /^\)/ { in_block=0; next }
+                in_block && /^\s+\S/ { gsub(/^\s+/, ""); print $1 "\t" $2 }
+                /^require [^(]/ { print $2 "\t" $3 }
+            ' 2>/dev/null
+            ;;
+        Cargo.lock)
+            echo "$content" | awk '
+                /^\[\[package\]\]/ { in_pkg=1; name=""; version="" }
+                in_pkg && /^name = / { gsub(/"/, "", $3); name=$3 }
+                in_pkg && /^version = / { gsub(/"/, "", $3); version=$3 }
+                in_pkg && name != "" && version != "" { print name "\t" version; in_pkg=0 }
+            ' 2>/dev/null
+            ;;
+        Pipfile.lock)
+            echo "$content" | jq -r '
+                [(.default // {}), (.develop // {})] | add // {} |
+                to_entries[] | "\(.key)\t\(.value.version // "unknown" | gsub("=="; ""))"
+            ' 2>/dev/null
+            ;;
+        composer.lock)
+            echo "$content" | jq -r '
+                [(.packages // []), (."packages-dev" // [])] | add // [] |
+                .[] | "\(.name)\t\(.version // "unknown")"
+            ' 2>/dev/null
+            ;;
+        gradle.lockfile)
+            echo "$content" | grep -v '^\s*#\|^\s*$\|^empty=' | \
+                awk -F'[=:]' '{ if (NF >= 3) print $1 ":" $2 "\t" $3 }' 2>/dev/null
+            ;;
+        pom.xml)
+            echo "$content" | awk '
+                /<dependency>/ { in_dep=1; gid=""; aid=""; ver="" }
+                in_dep && /<groupId>/ { gsub(/<[^>]*>/, ""); gsub(/^[[:space:]]+|[[:space:]]+$/, ""); gid=$0 }
+                in_dep && /<artifactId>/ { gsub(/<[^>]*>/, ""); gsub(/^[[:space:]]+|[[:space:]]+$/, ""); aid=$0 }
+                in_dep && /<version>/ { gsub(/<[^>]*>/, ""); gsub(/^[[:space:]]+|[[:space:]]+$/, ""); ver=$0 }
+                /<\/dependency>/ { if (gid != "" && aid != "") print gid ":" aid "\t" (ver != "" ? ver : "unknown"); in_dep=0 }
+            ' 2>/dev/null
+            ;;
+        # Skip unparseable lock files: package-lock.json, yarn.lock, pnpm-lock.yaml,
+        # poetry.lock, uv.lock, go.sum, Gemfile.lock
+    esac
+}
+
 # --- Memory file helpers ---
 
 memory_file_exists() {
     [[ -f "$MEMORY_FILE" ]]
-}
-
-# Check if a vuln ID exists as a top-level key under vulnerabilities:
-is_known_vuln() {
-    local vuln_id="$1"
-    memory_file_exists && grep -q "^  ${vuln_id}:" "$MEMORY_FILE" 2>/dev/null
-}
-
-# Extract a field value for a known vuln using sed
-# Searches within the block for the given vuln ID
-get_vuln_field() {
-    local vuln_id="$1"
-    local field="$2"
-    if ! memory_file_exists; then return 1; fi
-    # Extract the value after "field: " within the vuln's block
-    sed -n "/^  ${vuln_id}:/,/^  [A-Z]/{
-        /^\s*${field}:/{ s/.*${field}: *//; s/^\"//; s/\"$//; p; q; }
-    }" "$MEMORY_FILE" 2>/dev/null
-}
-
-# Get the Dependabot alert_state for a known vuln (nested under dependabot:)
-get_dependabot_field() {
-    local vuln_id="$1"
-    local field="$2"
-    if ! memory_file_exists; then return 1; fi
-    sed -n "/^  ${vuln_id}:/,/^  [A-Z]/{
-        /dependabot:/,/^    [a-z].*:/{
-            /^\s*${field}:/{ s/.*${field}: *//; s/^\"//; s/\"$//; p; q; }
-        }
-    }" "$MEMORY_FILE" 2>/dev/null
-}
-
-# Map VEX status + decision to developer-friendly language
-status_to_friendly() {
-    local status="$1"
-    local decision="$2"
-    case "$status" in
-        fixed) echo "Fixed" ;;
-        not_affected) echo "Not affected" ;;
-        under_investigation) echo "Investigating" ;;
-        affected)
-            case "$decision" in
-                risk-accepted) echo "Risk accepted" ;;
-                deferred) echo "Fix planned" ;;
-                *) echo "Vulnerable" ;;
-            esac
-            ;;
-        *) echo "Unknown" ;;
-    esac
 }
 
 # Create the memory file with header if it doesn't exist
@@ -130,47 +166,6 @@ HEADER
     fi
 }
 
-# Append a new vulnerability entry to the memory file
-append_vuln_entry() {
-    local vuln_id="$1" package="$2" ecosystem="$3" severity="$4" version="$5" manifest="$6" sbom_path="$7" timestamp="$8"
-
-    # Replace the empty vulnerabilities sentinel if present
-    if grep -q "^vulnerabilities: {}$" "$MEMORY_FILE" 2>/dev/null; then
-        sed -i 's/^vulnerabilities: {}$/vulnerabilities:/' "$MEMORY_FILE"
-    fi
-
-    cat >> "$MEMORY_FILE" << EOF
-  ${vuln_id}:
-    aliases: []
-    package: ${package}
-    ecosystem: ${ecosystem}
-    discovery:
-      date: "${timestamp}"
-      source: hook
-      file: ${manifest}
-      sbom: ${sbom_path}
-    versions:
-      current: "${version}"
-      current_source: "manifest: ${manifest}"
-      fixed_in: null
-      fix_source: null
-    severity: ${severity}
-    safe_harbour: null
-    status: under_investigation
-    justification: null
-    action_response: null
-    dependabot: null
-    decision:
-      choice: investigating
-      reason: "Discovered by pre-commit hook scan"
-      date: "${timestamp}"
-    history:
-      - date: "${timestamp}"
-        event: discovered
-        detail: "Found ${package}@${version} in ${manifest} during pre-commit scan"
-EOF
-}
-
 # Write/update the manifests section in the memory file
 # This replaces the entire manifests block with fresh data
 write_manifests_section() {
@@ -178,7 +173,6 @@ write_manifests_section() {
 
     if grep -q "^manifests:" "$MEMORY_FILE" 2>/dev/null; then
         # Remove existing manifests block (from "manifests:" to next top-level key or EOF)
-        # Use a temp file to avoid sed -i issues with multi-line blocks
         local tmpfile
         tmpfile=$(mktemp)
         awk '
@@ -198,14 +192,25 @@ write_manifests_section() {
 
 # --- Main hook logic ---
 
-# Read JSON from stdin
-INPUT=$(cat)
+# Check staged files early (fast, local) before any CLI/network operations
+STAGED_FILES=$(git diff --cached --name-only 2>/dev/null)
+if [[ -z "$STAGED_FILES" ]]; then
+    exit 0
+fi
 
-# Extract command from tool_input
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+# Filter for manifest files
+MANIFESTS_TO_SCAN=()
+while IFS= read -r file; do
+    filename=$(basename "$file")
+    for pattern in "${MANIFEST_PATTERNS[@]}"; do
+        if [[ "$filename" == "$pattern" ]] && [[ -f "$file" ]]; then
+            MANIFESTS_TO_SCAN+=("$file")
+            break
+        fi
+    done
+done <<< "$STAGED_FILES"
 
-# Check if this is a git commit command
-if [[ ! "$COMMAND" =~ git[[:space:]]+commit ]]; then
+if [[ ${#MANIFESTS_TO_SCAN[@]} -eq 0 ]]; then
     exit 0
 fi
 
@@ -262,28 +267,7 @@ if [[ "$API_STATUS" != "healthy" ]] || [[ "$AUTH_STATUS" != "ok" ]]; then
     exit 0
 fi
 
-# Get staged files
-STAGED_FILES=$(git diff --cached --name-only 2>/dev/null)
-if [[ -z "$STAGED_FILES" ]]; then
-    exit 0
-fi
-
-# Filter for manifest files
-MANIFESTS_TO_SCAN=()
-while IFS= read -r file; do
-    filename=$(basename "$file")
-    for pattern in "${MANIFEST_PATTERNS[@]}"; do
-        if [[ "$filename" == "$pattern" ]] && [[ -f "$file" ]]; then
-            MANIFESTS_TO_SCAN+=("$file")
-            break
-        fi
-    done
-done <<< "$STAGED_FILES"
-
-# If no manifests staged, exit
-if [[ ${#MANIFESTS_TO_SCAN[@]} -eq 0 ]]; then
-    exit 0
-fi
+# --- Extract packages from staged manifests ---
 
 # Ensure .vulnetix/ data directory exists
 mkdir -p "$SCANS_DIR" 2>/dev/null
@@ -305,186 +289,148 @@ fi
 SCAN_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 TIMESTAMP_COMPACT=$(date -u +"%Y%m%dT%H%M%SZ")
 
-# Arrays for tracking results
-NEW_VULNS=()          # Lines: "vulnId\tseverity\tpackage\tversion\tmanifest\tsbom_path\tecosystem"
-KNOWN_VULNS=()        # Lines: "vulnId\tstatus_friendly\tdependabot_context"
-MANIFEST_RECORDS=()   # Lines: "manifest\tecosystem\tvuln_count\tsbom_path"
-TOTAL_NEW=0
-TOTAL_KNOWN=0
+PACKAGES_FILE=$(mktemp)
+UNPARSEABLE_MANIFESTS=()
 
 for manifest in "${MANIFESTS_TO_SCAN[@]}"; do
-    SCAN_OUTPUT=$("$VULNETIX_CMD" scan --file "$manifest" -f cdx17 2>/dev/null)
-
-    if [[ -z "$SCAN_OUTPUT" ]]; then
-        continue
-    fi
-
-    # Persist CycloneDX SBOM
-    SANITIZED_NAME=$(echo "$manifest" | sed 's|/|--|g')
-    SBOM_PATH="${SCANS_DIR}/${SANITIZED_NAME}.${TIMESTAMP_COMPACT}.cdx.json"
-    echo "$SCAN_OUTPUT" > "$SBOM_PATH"
-
     filename=$(basename "$manifest")
     ecosystem=$(manifest_to_ecosystem "$filename")
+    packages=$(extract_packages_from_staged "$manifest")
 
-    # Extract individual vulnerability details via jq
-    # Joins vulnerabilities → affects → components to resolve package names
-    VULN_LINES=$(echo "$SCAN_OUTPUT" | jq -r '
-        (
-            [.components[]? | {(."bom-ref" // .name): {name: .name, version: (.version // "unknown")}}] | add // {}
-        ) as $comp_map |
-        .vulnerabilities[]? |
-        {
-            id: .id,
-            severity: (
-                [.ratings[]? | select(
-                    (.source.name? // .source? // "" | ascii_downcase) as $src |
-                    $src == "nvd" or $src == "ghsa" or $src == "github"
-                ) | .severity][0]
-                // [.ratings[]? | .severity][0]
-                // "unknown"
-            ),
-            package: (
-                (.affects[0]?.ref // null) as $ref |
-                if $ref then ($comp_map[$ref].name // "unknown") else "unknown" end
-            ),
-            version: (
-                (.affects[0]?.ref // null) as $ref |
-                if $ref then ($comp_map[$ref].version // "unknown") else "unknown" end
-            )
-        } |
-        "\(.id)\t\(.severity | ascii_downcase)\t\(.package)\t\(.version)"
-    ' 2>/dev/null)
-
-    MANIFEST_VULN_COUNT=0
-
-    if [[ -n "$VULN_LINES" ]]; then
-        while IFS=$'\t' read -r vuln_id severity package version; do
-            if [[ -z "$vuln_id" ]] || [[ "$vuln_id" == "null" ]]; then
-                continue
-            fi
-
-            MANIFEST_VULN_COUNT=$((MANIFEST_VULN_COUNT + 1))
-
-            if is_known_vuln "$vuln_id"; then
-                # Known vuln — get its current status
-                status=$(get_vuln_field "$vuln_id" "status")
-                decision=$(get_vuln_field "$vuln_id" "choice")
-                friendly=$(status_to_friendly "$status" "$decision")
-
-                # Check for Dependabot context
-                dep_context=""
-                dep_alert=$(get_dependabot_field "$vuln_id" "alert_state")
-                dep_pr=$(get_dependabot_field "$vuln_id" "pr_state")
-                dep_pr_num=$(get_dependabot_field "$vuln_id" "pr_number")
-                if [[ -n "$dep_pr" ]] && [[ "$dep_pr" != "null" ]]; then
-                    dep_context=" (Dependabot PR #${dep_pr_num}: ${dep_pr})"
-                elif [[ -n "$dep_alert" ]] && [[ "$dep_alert" != "null" ]]; then
-                    dep_context=" (Dependabot: ${dep_alert})"
-                fi
-
-                KNOWN_VULNS+=("${vuln_id}\t${friendly}${dep_context}")
-                TOTAL_KNOWN=$((TOTAL_KNOWN + 1))
-            else
-                # New vuln — will be recorded in memory
-                NEW_VULNS+=("${vuln_id}\t${severity}\t${package}\t${version}\t${manifest}\t${SBOM_PATH}\t${ecosystem}")
-                TOTAL_NEW=$((TOTAL_NEW + 1))
-            fi
-        done <<< "$VULN_LINES"
+    if [[ -n "$packages" ]]; then
+        while IFS=$'\t' read -r pkg ver; do
+            [[ -z "$pkg" ]] && continue
+            printf '%s\t%s\t%s\t%s\n' "$pkg" "$ver" "$ecosystem" "$manifest" >> "$PACKAGES_FILE"
+        done <<< "$packages"
+    else
+        UNPARSEABLE_MANIFESTS+=("$manifest")
     fi
-
-    # Record manifest scan metadata
-    MANIFEST_RECORDS+=("${manifest}\t${ecosystem}\t${MANIFEST_VULN_COUNT}\t${SBOM_PATH}")
 done
 
-# --- Update .vulnetix/memory.yaml ---
+# Deduplicate by package name + ecosystem, limit to 50 packages
+DEDUP_FILE=$(mktemp)
+sort -t$'\t' -k1,1 -k3,3 -u "$PACKAGES_FILE" | head -50 > "$DEDUP_FILE"
+mv "$DEDUP_FILE" "$PACKAGES_FILE"
 
-if [[ $TOTAL_NEW -gt 0 ]] || [[ ${#MANIFEST_RECORDS[@]} -gt 0 ]]; then
-    ensure_memory_file
+PKG_COUNT=$(wc -l < "$PACKAGES_FILE" 2>/dev/null | tr -d ' ')
 
-    # Write new vulnerability entries
-    for entry in "${NEW_VULNS[@]}"; do
-        IFS=$'\t' read -r vuln_id severity package version manifest sbom_path ecosystem <<< "$entry"
-        append_vuln_entry "$vuln_id" "$package" "$ecosystem" "$severity" "$version" "$manifest" "$sbom_path" "$SCAN_TIMESTAMP"
-    done
+# Build manifest summary
+MANIFEST_SUMMARY=""
+for manifest in "${MANIFESTS_TO_SCAN[@]}"; do
+    filename=$(basename "$manifest")
+    ecosystem=$(manifest_to_ecosystem "$filename")
+    [[ -n "$MANIFEST_SUMMARY" ]] && MANIFEST_SUMMARY="${MANIFEST_SUMMARY}, "
+    MANIFEST_SUMMARY="${MANIFEST_SUMMARY}${manifest} (${ecosystem})"
+done
 
-    # Build and write manifests section
-    MANIFESTS_YAML="manifests:"
-    if [[ ${#MANIFEST_RECORDS[@]} -gt 0 ]]; then
-        for record in "${MANIFEST_RECORDS[@]}"; do
-            IFS=$'\t' read -r manifest ecosystem vuln_count sbom_path <<< "$record"
-            # Use the manifest path as a sanitized key (replace / with --)
+if [[ "$PKG_COUNT" -eq 0 ]]; then
+    rm -f "$PACKAGES_FILE"
+    # Still note that manifests changed even if we couldn't extract packages
+    jq -n --arg msg "Vulnetix: Staged manifest changes detected (${MANIFEST_SUMMARY}) but no packages could be extracted for scanning." \
+        '{"systemMessage": $msg}'
+    exit 0
+fi
+
+RESULTS_FILE="${SCANS_DIR}/pre-commit.${TIMESTAMP_COMPACT}.packages.json"
+
+# --- Launch background package search ---
+# Runs VDB queries without blocking the commit operation.
+# Results are written to .vulnetix/scans/ and memory.yaml manifests section is updated.
+
+(
+    RISKY_ENTRIES=()
+    TOTAL_VULNS=0
+    SCANNED=0
+
+    while IFS=$'\t' read -r pkg_name pkg_version ecosystem manifest; do
+        [[ -z "$pkg_name" ]] && continue
+        SCANNED=$((SCANNED + 1))
+
+        RESULT=$("$VULNETIX_CMD" vdb packages search "$pkg_name" --ecosystem "$ecosystem" -o json 2>/dev/null)
+        [[ -z "$RESULT" ]] && continue
+
+        VULN_COUNT=$(echo "$RESULT" | jq -r '.packages[0].vulnerabilityCount // 0' 2>/dev/null)
+        [[ "$VULN_COUNT" -eq 0 ]] 2>/dev/null && continue
+
+        MAX_SEV=$(echo "$RESULT" | jq -r '.packages[0].maxSeverity // "unknown"' 2>/dev/null)
+        SH_SCORE=$(echo "$RESULT" | jq -r '.packages[0].safeHarbourScore // 0' 2>/dev/null)
+        LATEST=$(echo "$RESULT" | jq -r '.packages[0].latestVersion // "unknown"' 2>/dev/null)
+        TOTAL_VULNS=$((TOTAL_VULNS + VULN_COUNT))
+
+        ENTRY=$(jq -n \
+            --arg name "$pkg_name" \
+            --arg ver "$pkg_version" \
+            --arg eco "$ecosystem" \
+            --arg man "$manifest" \
+            --argjson vc "$VULN_COUNT" \
+            --arg ms "$MAX_SEV" \
+            --arg sh "$SH_SCORE" \
+            --arg lv "$LATEST" \
+            '{name:$name,version:$ver,ecosystem:$eco,manifest:$man,vulnerability_count:$vc,max_severity:$ms,safe_harbour_score:$sh,latest_version:$lv}')
+        RISKY_ENTRIES+=("$ENTRY")
+    done < "$PACKAGES_FILE"
+
+    # Build results JSON
+    RISKY_ARRAY="[]"
+    if [[ ${#RISKY_ENTRIES[@]} -gt 0 ]]; then
+        RISKY_ARRAY=$(printf '%s\n' "${RISKY_ENTRIES[@]}" | jq -s '.')
+    fi
+
+    MANIFEST_LIST_JSON=$(printf '%s\n' "${MANIFESTS_TO_SCAN[@]}" | jq -R -s 'split("\n") | map(select(. != ""))')
+
+    jq -n \
+        --arg ts "$SCAN_TIMESTAMP" \
+        --argjson manifests "$MANIFEST_LIST_JSON" \
+        --argjson scanned "$SCANNED" \
+        --argjson risky "$RISKY_ARRAY" \
+        --argjson total_vulns "$TOTAL_VULNS" \
+        '{timestamp:$ts,manifests:$manifests,packages_scanned:$scanned,risky_packages:$risky,total_vulnerabilities:$total_vulns}' \
+        > "$RESULTS_FILE"
+
+    # Update manifests section in memory.yaml (best-effort)
+    if [[ -d "$VULNETIX_DIR" ]]; then
+        ensure_memory_file
+
+        MANIFESTS_YAML="manifests:"
+        for manifest in "${MANIFESTS_TO_SCAN[@]}"; do
+            filename=$(basename "$manifest")
+            ecosystem=$(manifest_to_ecosystem "$filename")
             manifest_key=$(echo "$manifest" | sed 's|/|--|g')
             MANIFESTS_YAML="${MANIFESTS_YAML}
   ${manifest_key}:
     path: \"${manifest}\"
     ecosystem: ${ecosystem}
     last_scanned: \"${SCAN_TIMESTAMP}\"
-    sbom_generated: true
-    sbom_path: \"${sbom_path}\"
-    vuln_count: ${vuln_count}
+    packages_searched: true
+    results_path: \"${RESULTS_FILE}\"
     scan_source: hook"
         done
-    else
-        MANIFESTS_YAML="manifests: {}"
+
+        write_manifests_section "$MANIFESTS_YAML"
     fi
 
-    write_manifests_section "$MANIFESTS_YAML"
+    # Cleanup
+    rm -f "$PACKAGES_FILE"
+
+) </dev/null >/dev/null 2>&1 &
+disown
+
+# --- Immediate systemMessage ---
+
+MESSAGE="Vulnetix: Scanning ${PKG_COUNT} packages from ${#MANIFESTS_TO_SCAN[@]} staged manifests in background.\n"
+MESSAGE="${MESSAGE}Manifests: ${MANIFEST_SUMMARY}\n"
+MESSAGE="${MESSAGE}Results will be saved to \`${RESULTS_FILE}\`."
+
+if [[ ${#UNPARSEABLE_MANIFESTS[@]} -gt 0 ]]; then
+    UNPARSEABLE_LIST=""
+    for m in "${UNPARSEABLE_MANIFESTS[@]}"; do
+        [[ -n "$UNPARSEABLE_LIST" ]] && UNPARSEABLE_LIST="${UNPARSEABLE_LIST}, "
+        UNPARSEABLE_LIST="${UNPARSEABLE_LIST}$(basename "$m")"
+    done
+    MESSAGE="${MESSAGE}\nNote: ${UNPARSEABLE_LIST} changed but packages could not be extracted (lock file format)."
 fi
 
-# --- Build systemMessage ---
-
-if [[ $TOTAL_NEW -gt 0 ]] || [[ $TOTAL_KNOWN -gt 0 ]]; then
-    MESSAGE="Vulnetix pre-commit scan results:\n"
-
-    # New vulnerabilities
-    if [[ $TOTAL_NEW -gt 0 ]]; then
-        MESSAGE="${MESSAGE}\n${TOTAL_NEW} new vulnerabilities:\n"
-        for entry in "${NEW_VULNS[@]}"; do
-            IFS=$'\t' read -r vuln_id severity package version manifest _ _ <<< "$entry"
-            MESSAGE="${MESSAGE}• ${vuln_id} (${severity}) — ${package}@${version} in ${manifest}\n"
-        done
-    fi
-
-    # Previously tracked vulnerabilities
-    if [[ $TOTAL_KNOWN -gt 0 ]]; then
-        MESSAGE="${MESSAGE}\n${TOTAL_KNOWN} previously tracked:\n"
-        for entry in "${KNOWN_VULNS[@]}"; do
-            IFS=$'\t' read -r vuln_id friendly_status <<< "$entry"
-            MESSAGE="${MESSAGE}• ${vuln_id} — ${friendly_status}\n"
-        done
-    fi
-
-    # Scanned manifests summary
-    MANIFEST_SUMMARY=""
-    for record in "${MANIFEST_RECORDS[@]}"; do
-        IFS=$'\t' read -r manifest ecosystem _ _ <<< "$record"
-        if [[ -n "$MANIFEST_SUMMARY" ]]; then
-            MANIFEST_SUMMARY="${MANIFEST_SUMMARY}, "
-        fi
-        MANIFEST_SUMMARY="${MANIFEST_SUMMARY}${manifest} (${ecosystem})"
-    done
-    MESSAGE="${MESSAGE}\nManifests scanned: ${MANIFEST_SUMMARY}\nSBOMs saved to ${SCANS_DIR}/\n"
-
-    if [[ $TOTAL_NEW -gt 0 ]]; then
-        MESSAGE="${MESSAGE}\nReview with \`/vulnetix:fix <vuln-id>\` or \`/vulnetix:exploits <vuln-id>\`."
-    fi
-
-    # Use printf to interpret \n, then pass to jq for proper JSON escaping
-    FORMATTED=$(printf "%b" "$MESSAGE")
-    jq -n --arg msg "$FORMATTED" '{"systemMessage": $msg}'
-
-elif [[ ${#MANIFEST_RECORDS[@]} -gt 0 ]]; then
-    # No vulns at all — brief confirmation with manifest tracking
-    MANIFEST_SUMMARY=""
-    for record in "${MANIFEST_RECORDS[@]}"; do
-        IFS=$'\t' read -r manifest ecosystem _ _ <<< "$record"
-        if [[ -n "$MANIFEST_SUMMARY" ]]; then
-            MANIFEST_SUMMARY="${MANIFEST_SUMMARY}, "
-        fi
-        MANIFEST_SUMMARY="${MANIFEST_SUMMARY}${manifest} (${ecosystem})"
-    done
-    jq -n --arg msg "Vulnetix: No vulnerabilities found in staged dependencies. Manifests scanned: ${MANIFEST_SUMMARY}. SBOMs saved to ${SCANS_DIR}/." '{"systemMessage": $msg}'
-fi
+FORMATTED=$(printf "%b" "$MESSAGE")
+jq -n --arg msg "$FORMATTED" '{"systemMessage": $msg}'
 
 exit 0

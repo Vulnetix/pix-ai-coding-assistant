@@ -37,12 +37,9 @@ SBOM files follow this naming pattern:
 
 ## Creation
 
-SBOMs are created by two hooks:
+SBOMs are created by the **[Post-Install Scan](/docs/hooks/post-install-scan)** hook, which generates an SBOM after a dependency install command (`npm install`, `pip install`, etc.). The [Pre-Commit Scan](/docs/hooks/pre-commit-scan) hook uses background VDB package searches instead of SBOM generation to avoid blocking commits.
 
-- **[Pre-Commit Scan](/docs/hooks/pre-commit-scan)** -- generates an SBOM for each staged manifest file before a `git commit`
-- **[Post-Install Scan](/docs/hooks/post-install-scan)** -- generates an SBOM after a dependency install command (`npm install`, `pip install`, etc.)
-
-Both hooks run:
+The post-install hook runs:
 
 ```bash
 vulnetix scan --file <manifest> -f cdx17

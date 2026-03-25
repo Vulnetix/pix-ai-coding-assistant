@@ -22,12 +22,12 @@ The `manifests` section tracks every dependency manifest that has been scanned.
 
 ```yaml
 manifests:
-  - path: package.json
+  package.json:
+    path: "package.json"
     ecosystem: npm
     last_scanned: "2025-03-15T10:30:00Z"
-    sbom_generated: true
-    sbom_path: .vulnetix/scans/package.json.1710495000.cdx.json
-    vuln_count: 3
+    packages_searched: true
+    results_path: ".vulnetix/scans/pre-commit.20250315T103000Z.packages.json"
     scan_source: hook
 ```
 
@@ -36,10 +36,11 @@ manifests:
 | `path` | string | Relative path to the manifest file |
 | `ecosystem` | string | Package ecosystem (`npm`, `pypi`, `go`, `cargo`, `maven`, `rubygems`, `packagist`) |
 | `last_scanned` | string | ISO 8601 timestamp of the last scan |
-| `sbom_generated` | bool | Whether an SBOM was produced |
-| `sbom_path` | string | Path to the generated SBOM file |
-| `vuln_count` | int | Number of vulnerabilities found in the last scan |
+| `packages_searched` | bool | Whether VDB package searches were run |
+| `results_path` | string | Path to the package search results JSON file |
 | `scan_source` | string | What triggered the scan (`hook`, `skill`, `manual`) |
+
+The post-install scan hook writes additional fields (`sbom_generated`, `sbom_path`, `vuln_count`) when it generates CycloneDX SBOMs.
 
 ## Vulnerabilities Section
 
@@ -196,7 +197,8 @@ Different tools write different fields, with clear boundaries:
 
 | Tool | Fields Written |
 |------|---------------|
-| **Hooks** (pre-commit, post-install) | Create new entries with `discovery`, `versions.current`, `status: under_investigation`, manifests section |
+| **Hooks** (pre-commit) | Update `manifests` section with package search metadata and results paths |
+| **Hooks** (post-install) | Create new vulnerability entries with `discovery`, `versions.current`, `status: under_investigation`, update `manifests` section with SBOM paths |
 | **Skills** (fix, exploits, etc.) | Update `severity`, `cwss`, `pocs`, `dependabot`, `code_scanning`, `secret_scanning`, `threat_model` |
 | **Bulk Triage agent** | Update `severity`, `cwss`, add `history` entries |
 | **User decisions only** | `status`, `decision.choice`, `decision.reason`, `justification`, `action_response` |
