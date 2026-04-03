@@ -108,4 +108,5 @@ All findings, decisions, and scan history persist in the `.vulnetix/` directory.
   <a href="https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec" target="_blank" rel="noopener">VDB API Docs</a>
   <a href="https://github.com/Vulnetix/claude-code-plugin" target="_blank" rel="noopener">GitHub</a>
   <a href="https://www.vulnetix.com" target="_blank" rel="noopener">vulnetix.com</a>
+  <a href="/terms/">Terms of Service</a>
 </div>
