@@ -4,25 +4,44 @@ weight: 1
 description: "Install the Vulnetix security plugin for Claude Code."
 ---
 
-## Quick Install
+## Install via Marketplace (Recommended)
+
+Add the Vulnetix marketplace to Claude Code:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+/plugin marketplace add Vulnetix/claude-code-plugin
 ```
 
-This installs the Vulnetix security skills into your project's `.claude/skills` directory.
+Then install the plugin:
+
+```
+/plugin install vulnetix@vulnetix-plugins
+```
+
+The plugin registers its hooks, skills, commands, and agents automatically.
+
+## Install via Local Clone
+
+Clone the repository to a local directory:
+
+```bash
+git clone https://github.com/Vulnetix/claude-code-plugin.git ~/claude-code-plugin
+```
+
+Point Claude Code at the plugin manifest:
+
+```
+/plugin add ~/claude-code-plugin/vulnetix
+```
 
 ## Prerequisites
 
-Before running the install command:
+Before installing:
 
-1. **Node.js** — Required to run `npx`. Install from [nodejs.org](https://nodejs.org/) if not already available.
-2. **Vulnetix CLI** — Install and authenticate following the [prerequisites guide](../../getting-started/prerequisites/).
-3. **jq** — Required by plugin hooks for JSON processing. See [prerequisites](../../getting-started/prerequisites/#install-jq) for install instructions.
+1. **Vulnetix CLI** — Install and authenticate following the [prerequisites guide](../../getting-started/prerequisites/).
+2. **jq** — Required by plugin hooks for JSON processing. See [prerequisites](../../getting-started/prerequisites/#install-jq) for install instructions.
 
 ## What Gets Installed
-
-The plugin registers the following into `.claude/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
@@ -33,7 +52,13 @@ The plugin registers the following into `.claude/skills`:
 
 ## Verify Installation
 
-Run the dashboard skill to confirm everything is working:
+Check the plugin is enabled:
+
+```
+/plugins
+```
+
+The output should list `vulnetix` with a status of **enabled**. Then run a skill to confirm API access:
 
 ```
 /vulnetix:dashboard
@@ -43,18 +68,22 @@ You should see a vulnerability summary table for your project's dependencies. If
 
 ## Updating
 
-To update to the latest version:
+Re-run the marketplace install to pull the latest version:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+/plugin install vulnetix@vulnetix-plugins
 ```
 
-Running the install command again pulls the latest version and overwrites existing files.
+Or if using a local clone:
+
+```bash
+cd ~/claude-code-plugin && git pull
+```
 
 ## Uninstall
 
-Remove the plugin by deleting the skills directory:
+Remove the plugin from Claude Code:
 
-```bash
-rm -rf .claude/skills
+```
+/plugin remove vulnetix
 ```
