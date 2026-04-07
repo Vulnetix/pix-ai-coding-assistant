@@ -335,3 +335,27 @@
     text-align: center;
   }
 }
+
+
+/* ==========================================================================
+   Homepage — VDB Intro
+   ========================================================================== */
+
+.vx-intro {
+  padding: 3rem 0;
+  margin-bottom: 2.5rem;
+  width: 100%;
+  max-width: 56rem;
+}
+
+.vx-intro h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.vx-intro p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  max-width: 48rem;
+}
