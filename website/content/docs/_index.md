@@ -3,7 +3,11 @@ title: Documentation
 description: Complete reference for the Vulnetix Claude Code Plugin — hooks, skills, commands, agents, and data structures.
 ---
 
-Welcome to the Vulnetix Claude Code Plugin documentation. This plugin brings automated vulnerability intelligence directly into your Claude Code development workflow.
+The Vulnetix Claude Code Plugin connects Claude to Vulnetix VDB, the most comprehensive open-access vulnerability database available. 160 upstream sources — CVE, GHSA, OSV, vendor advisories, and many more — aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+
+The plugin scans your dependencies as you code, flags vulnerabilities and malicious packages in real time, and gives Claude the context to recommend fixes that won't introduce new problems. No context-switching, no separate tools, no post-facto scanning.
+
+Free to start with a Community API key. Pro ($25/mo) unlocks the full enrichment layer — malware intelligence, safe harbour versioning, AI-generated advisories, and more.
 
 {{< cards >}}
   {{< card link="getting-started" title="Getting Started" icon="play" subtitle="Install prerequisites, add the plugin, and verify your setup." >}}
