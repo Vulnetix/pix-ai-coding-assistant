@@ -28,11 +28,15 @@ layout: hextra-home
 
 <div class="vx-hero-spacer"></div>
 
-<h2 style="margin-top: 3rem;"><strong>Powered by Vulnetix VDB</strong></h2>
+---
+
+## Powered by Vulnetix VDB
 
 This plugin connects Claude to [Vulnetix VDB](https://vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources — CVE, GHSA, OSV, vendor advisories, and many more — aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
 
 Every scan, lookup, and recommendation in this plugin is backed by live VDB data. Free to start with a [Community API key](https://vulnetix.com/vdb). [Pro ($25/mo)](https://vulnetix.com/vdb) unlocks the full enrichment layer — malware intelligence, safe harbour versioning, AI-generated advisories, and more.
+
+---
 
 <div class="vx-feature-section vx-feature-scan">
 
