@@ -51,7 +51,7 @@ Six event-driven hooks run automatically in your Claude Code workflow. Scan depe
 
 ## Powered by Vulnetix VDB
 
-This plugin connects Claude Code to [Vulnetix VDB](https://vdb.vulnetix.com), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+This plugin connects Claude Code to [Vulnetix VDB](https://www.vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
 
 Every scan, lookup, and recommendation in this plugin is backed by live VDB data.
 
@@ -66,7 +66,7 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
       <li>Fix advisories and patch links</li>
       <li>50 queries / day</li>
     </ul>
-    <a href="https://vdb.vulnetix.com/register" class="vx-btn-primary" target="_blank" rel="noopener">Get free API key &rarr;</a>
+    <a href="https://www.vulnetix.com/vdb/register" class="vx-btn-primary" target="_blank" rel="noopener">Get free API key &rarr;</a>
   </div>
   <div class="vx-pricing-card vx-pricing-card--pro">
     <div class="vx-pricing-badge">ALL ENRICHMENT</div>
@@ -80,7 +80,7 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
       <li>Safe harbour versioning</li>
       <li>2,000 queries / day</li>
     </ul>
-    <a href="https://vdb.vulnetix.com/register?plan=pro" class="vx-btn-primary" target="_blank" rel="noopener">Start Pro &rarr;</a>
+    <a href="https://www.vulnetix.com/vdb?plan=pro" class="vx-btn-primary" target="_blank" rel="noopener">Start Pro &rarr;</a>
   </div>
   <div class="vx-pricing-card vx-pricing-card--teams">
     <div class="vx-pricing-badge vx-pricing-badge--teams">BEST VALUE</div>
@@ -93,11 +93,11 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
       <li>100,000 queries / day / key</li>
       <li>Dedicated support channel</li>
     </ul>
-    <a href="https://vdb.vulnetix.com/register?plan=teams" class="vx-btn-primary" target="_blank" rel="noopener">Start Teams &rarr;</a>
+    <a href="https://www.vulnetix.com/vdb?plan=teams" class="vx-btn-primary" target="_blank" rel="noopener">Start Teams &rarr;</a>
   </div>
 </div>
 
-<a href="https://vdb.vulnetix.com" class="vx-feature-link" target="_blank" rel="noopener">Full pricing and feature comparison &rarr;</a>
+<a href="https://www.vulnetix.com/vdb#pricing" class="vx-feature-link" target="_blank" rel="noopener">Full pricing and feature comparison &rarr;</a>
 
 </div>
 
