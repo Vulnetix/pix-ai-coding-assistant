@@ -28,15 +28,11 @@ layout: hextra-home
 
 <div class="vx-hero-spacer"></div>
 
-<div style="max-width: 48rem; margin: 3rem auto; line-height: 1.7;">
-  <h2 style="margin-bottom: 1rem;">Powered by Vulnetix VDB</h2>
-  <p style="margin-bottom: 1rem; color: #4b5563;">
-    This plugin connects Claude to <a href="https://vulnetix.com/vdb">Vulnetix VDB</a>, the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
-  </p>
-  <p style="color: #4b5563;">
-    Every scan, lookup, and recommendation in this plugin is backed by live VDB data. Free to start with a <a href="https://vulnetix.com/vdb">Community API key</a>. <a href="https://vulnetix.com/vdb">Pro ($25/mo)</a> unlocks the full enrichment layer &mdash; malware intelligence, safe harbour versioning, AI-generated advisories, and more.
-  </p>
-</div>
+<h2 style="margin-top: 3rem;"><strong>Powered by Vulnetix VDB</strong></h2>
+
+This plugin connects Claude to [Vulnetix VDB](https://vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources — CVE, GHSA, OSV, vendor advisories, and many more — aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+
+Every scan, lookup, and recommendation in this plugin is backed by live VDB data. Free to start with a [Community API key](https://vulnetix.com/vdb). [Pro ($25/mo)](https://vulnetix.com/vdb) unlocks the full enrichment layer — malware intelligence, safe harbour versioning, AI-generated advisories, and more.
 
 <div class="vx-feature-section vx-feature-scan">
 
