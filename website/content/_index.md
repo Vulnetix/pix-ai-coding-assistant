@@ -24,9 +24,19 @@ layout: hextra-home
   <a href="docs/getting-started" class="vx-btn-primary">Get Started</a>
   <a href="https://github.com/Vulnetix/claude-code-plugin" class="vx-btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
 </div>
-<a href="https://www.vulnetix.com" class="vx-subtle-link" target="_blank" rel="noopener">Learn more at vulnetix.com &rarr;</a>
+<a href="https://www.vulnetix.com/vdb" class="vx-subtle-link" target="_blank" rel="noopener">Learn more about Vulnetix VDB &rarr;</a>
 
 <div class="vx-hero-spacer"></div>
+
+<div class="vx-feature-section vx-feature-scan">
+
+## Powered by Vulnetix VDB
+
+This plugin connects Claude to [Vulnetix VDB](https://vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+
+Every scan, lookup, and recommendation in this plugin is backed by live VDB data. Free to start with a [Community API key](https://vulnetix.com/vdb). [Pro ($25/mo)](https://vulnetix.com/vdb) unlocks the full enrichment layer &mdash; malware intelligence, safe harbour versioning, AI-generated advisories, and more.
+
+</div>
 
 <div class="vx-feature-section vx-feature-scan">
 
