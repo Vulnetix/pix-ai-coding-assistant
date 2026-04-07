@@ -86,10 +86,10 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
     <div class="vx-pricing-badge vx-pricing-badge--teams">BEST VALUE</div>
     <div class="vx-pricing-tier">Teams</div>
     <div class="vx-pricing-price">$450 <span>USD / month</span></div>
-    <div class="vx-pricing-desc">Multiple keys, volume, and uptime guarantees.</div>
+    <div class="vx-pricing-desc">For teams that need volume and multiple API keys.</div>
     <ul>
       <li>Everything in Pro</li>
-      <li>Multiple dedicated API keys</li>
+      <li>10 API keys included</li>
       <li>100,000 queries / day / key</li>
       <li>Dedicated support channel</li>
     </ul>
