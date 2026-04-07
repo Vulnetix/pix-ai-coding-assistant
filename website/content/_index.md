@@ -28,25 +28,6 @@ layout: hextra-home
 
 <div class="vx-hero-spacer"></div>
 
-<div class="vx-feature-section vx-feature-scan">
-
-## Automatic Security Scanning
-
-Six event-driven hooks run automatically in your Claude Code workflow. Scan dependencies on every commit, detect vulnerabilities after package installs, gate manifest edits with risk data, and surface prior context when you mention a CVE.
-
-<ul>
-  <li>Pre-commit scanning</li>
-  <li>Post-install detection</li>
-  <li>Manifest edit gating</li>
-  <li>Session dashboard</li>
-  <li>Stop reminders</li>
-  <li>CVE context injection</li>
-</ul>
-
-<a href="docs/hooks" class="vx-feature-link">Hook reference &rarr;</a>
-
-</div>
-
 <div class="vx-feature-section vx-feature-powered">
 
 ## Powered by Vulnetix VDB
@@ -100,6 +81,27 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
 <a href="https://www.vulnetix.com/vdb#pricing" class="vx-feature-link" target="_blank" rel="noopener">Full pricing and feature comparison &rarr;</a>
 
 </div>
+
+<div class="vx-feature-section vx-feature-scan">
+
+## Automatic Security Scanning
+
+Six event-driven hooks run automatically in your Claude Code workflow. Scan dependencies on every commit, detect vulnerabilities after package installs, gate manifest edits with risk data, and surface prior context when you mention a CVE.
+
+<ul>
+  <li>Pre-commit scanning</li>
+  <li>Post-install detection</li>
+  <li>Manifest edit gating</li>
+  <li>Session dashboard</li>
+  <li>Stop reminders</li>
+  <li>CVE context injection</li>
+</ul>
+
+<a href="docs/hooks" class="vx-feature-link">Hook reference &rarr;</a>
+
+</div>
+
+
 
 <div class="vx-feature-section vx-feature-vdb">
 
