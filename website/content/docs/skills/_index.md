@@ -17,6 +17,7 @@ Every skill:
 
 | Skill | Invocation | Purpose |
 |-------|-----------|---------|
+| [Dashboard](dashboard) | `/vulnetix:dashboard` | View all tracked vulnerabilities and status |
 | [Package Search](package-search) | `/vulnetix:package-search <name>` | Search packages and assess security risk |
 | [Exploit Analysis](exploits) | `/vulnetix:exploits <vuln-id>` | Analyze exploit intelligence and threat model |
 | [Fix Intelligence](fix) | `/vulnetix:fix <vuln-id>` | Get fix intelligence and apply remediation |
