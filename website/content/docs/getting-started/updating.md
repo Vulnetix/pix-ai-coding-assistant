@@ -6,7 +6,17 @@ description: "Keep the Vulnetix plugin up to date with the latest hooks, skills,
 
 How you update depends on how you installed the plugin.
 
-## Marketplace Install
+## npx skills (All Agents)
+
+If you installed with `npx skills add`, run the same command again:
+
+```
+npx skills add Vulnetix/claude-code-plugin
+```
+
+This pulls the latest version and overwrites existing files in your agent's skills directory.
+
+## Claude Code Marketplace
 
 Run a single command inside Claude Code:
 
@@ -16,7 +26,7 @@ Run a single command inside Claude Code:
 
 Claude Code pulls the latest version from the marketplace and re-registers all hooks and skills automatically.
 
-## Local Clone
+## Claude Code Local Clone
 
 Pull the latest changes from the repository:
 
@@ -36,13 +46,13 @@ Then remove and re-add the plugin so Claude Code picks up any new or changed man
 
 ## Verify After Updating
 
-After either method, confirm the update took effect:
+Run a skill to confirm the update took effect:
 
 ```
-/plugins
+/vulnetix:dashboard
 ```
 
-The `vulnetix` plugin should appear as **enabled**. Run `/hooks` to confirm all six hooks are still registered.
+You should see a vulnerability summary table. For Claude Code specifically, you can also run `/plugins` to confirm the plugin is **enabled** and `/hooks` to confirm all six hooks are registered.
 
 ---
 
