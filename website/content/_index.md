@@ -28,7 +28,7 @@ layout: hextra-home
 
 <div class="vx-hero-spacer"></div>
 
-<div class="vx-feature-section vx-feature-scan">
+<div class="hx-mt-12 hx-mb-12" style="max-width: 48rem;">
 
 ## Powered by Vulnetix VDB
 
