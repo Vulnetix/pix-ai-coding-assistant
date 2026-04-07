@@ -71,7 +71,7 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
   <div class="vx-pricing-card vx-pricing-card--pro">
     <div class="vx-pricing-badge">ALL ENRICHMENT</div>
     <div class="vx-pricing-tier">Pro</div>
-    <div class="vx-pricing-price">$29 <span>USD / month</span></div>
+    <div class="vx-pricing-price">$15 <span>USD / month</span></div>
     <div class="vx-pricing-desc">Full enrichment layer for individuals.</div>
     <ul>
       <li>Everything in Community</li>

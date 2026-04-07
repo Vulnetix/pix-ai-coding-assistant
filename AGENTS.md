@@ -92,7 +92,7 @@ Account management backend. The plugin depends on it for:
 | Tier | Requests/Day | Cost |
 |------|-------------|------|
 | Community | 50 | Free |
-| Pro | 2,000 | $29/mo |
+| Pro | 2,000 | $15/mo |
 | Teams | 100,000 | $450/mo |
 | Enterprise | Custom | Custom |
 
