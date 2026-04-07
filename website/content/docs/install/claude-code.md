@@ -66,7 +66,7 @@ The output should list `vulnetix` with a status of **enabled**. Then run a skill
 
 You should see a vulnerability summary table for your project's dependencies. If you get an authentication error, re-run `vulnetix auth login`.
 
-## Updating
+## Upgrade
 
 Re-run the marketplace install to pull the latest version:
 
@@ -80,10 +80,18 @@ Or if using a local clone:
 cd ~/claude-code-plugin && git pull
 ```
 
+Your `.vulnetix/memory.yaml` and cached data are not affected.
+
 ## Uninstall
 
 Remove the plugin from Claude Code:
 
 ```
 /plugin remove vulnetix
+```
+
+To also remove cached vulnerability data and memory:
+
+```bash
+rm -rf .vulnetix/
 ```
