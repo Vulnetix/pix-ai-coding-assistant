@@ -28,16 +28,6 @@ layout: hextra-home
 
 <div class="vx-hero-spacer"></div>
 
-<div class="vx-intro">
-
-## Powered by Vulnetix VDB
-
-This plugin connects Claude to [Vulnetix VDB](https://vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources — CVE, GHSA, OSV, vendor advisories, and many more — aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
-
-Every scan, lookup, and recommendation in this plugin is backed by live VDB data. Free to start with a [Community API key](https://vulnetix.com/vdb). [Pro ($25/mo)](https://vulnetix.com/vdb) unlocks the full enrichment layer — malware intelligence, safe harbour versioning, AI-generated advisories, and more.
-
-</div>
-
 <div class="vx-feature-section vx-feature-scan">
 
 ## Automatic Security Scanning
@@ -54,6 +44,60 @@ Six event-driven hooks run automatically in your Claude Code workflow. Scan depe
 </ul>
 
 <a href="docs/hooks" class="vx-feature-link">Hook reference &rarr;</a>
+
+</div>
+
+<div class="vx-feature-section vx-feature-powered">
+
+## Powered by Vulnetix VDB
+
+This plugin connects Claude Code to [Vulnetix VDB](https://vdb.vulnetix.com), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+
+Every scan, lookup, and recommendation in this plugin is backed by live VDB data.
+
+<div class="vx-pricing-grid">
+  <div class="vx-pricing-card">
+    <div class="vx-pricing-tier">Community</div>
+    <div class="vx-pricing-price">Free</div>
+    <div class="vx-pricing-desc">For individuals evaluating VDB or building open source.</div>
+    <ul>
+      <li>160 re-served vulnerability sources</li>
+      <li>60+ identifier scheme lookups</li>
+      <li>Fix advisories and patch links</li>
+      <li>50 queries / day</li>
+    </ul>
+    <a href="https://vdb.vulnetix.com/register" class="vx-btn-primary" target="_blank" rel="noopener">Get free API key &rarr;</a>
+  </div>
+  <div class="vx-pricing-card vx-pricing-card--pro">
+    <div class="vx-pricing-badge">ALL ENRICHMENT</div>
+    <div class="vx-pricing-tier">Pro</div>
+    <div class="vx-pricing-price">$29 <span>USD / month</span></div>
+    <div class="vx-pricing-desc">Full enrichment layer for individuals.</div>
+    <ul>
+      <li>Everything in Community</li>
+      <li>Exploit maturity &amp; sightings</li>
+      <li>Malware campaigns &amp; indicators</li>
+      <li>Safe harbour versioning</li>
+      <li>2,000 queries / day</li>
+    </ul>
+    <a href="https://vdb.vulnetix.com/register?plan=pro" class="vx-btn-primary" target="_blank" rel="noopener">Start Pro &rarr;</a>
+  </div>
+  <div class="vx-pricing-card vx-pricing-card--teams">
+    <div class="vx-pricing-badge vx-pricing-badge--teams">BEST VALUE</div>
+    <div class="vx-pricing-tier">Teams</div>
+    <div class="vx-pricing-price">$450 <span>USD / month</span></div>
+    <div class="vx-pricing-desc">Multiple keys, volume, and uptime guarantees.</div>
+    <ul>
+      <li>Everything in Pro</li>
+      <li>Multiple dedicated API keys</li>
+      <li>100,000 queries / day / key</li>
+      <li>Dedicated support channel</li>
+    </ul>
+    <a href="https://vdb.vulnetix.com/register?plan=teams" class="vx-btn-primary" target="_blank" rel="noopener">Start Teams &rarr;</a>
+  </div>
+</div>
+
+<a href="https://vdb.vulnetix.com" class="vx-feature-link" target="_blank" rel="noopener">Full pricing and feature comparison &rarr;</a>
 
 </div>
 
