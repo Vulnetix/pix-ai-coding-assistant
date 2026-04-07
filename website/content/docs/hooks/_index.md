@@ -1,6 +1,6 @@
 ---
 title: Hooks
-weight: 2
+weight: 3
 description: Six event-driven hooks that scan, track, and surface vulnerability intelligence automatically during your Claude Code workflow.
 ---
 

@@ -1,44 +1,22 @@
 ---
 title: "Installation"
 weight: 2
-description: "Add the Vulnetix plugin to Claude Code from the marketplace or a local clone."
+description: "Add the Vulnetix security plugin to your AI coding agent."
 ---
 
-There are two ways to install the plugin. The marketplace method is recommended for most users; the local clone method is useful for development or air-gapped environments.
-
-## Option A: Marketplace (Recommended)
-
-First, add the Vulnetix marketplace to Claude Code:
+Install the Vulnetix security plugin with a single command:
 
 ```
-/plugin marketplace add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/claude-code-plugin
 ```
 
-Then install the plugin from that marketplace:
+This works with any supported agent. Skills are installed into the correct directory automatically.
 
-```
-/plugin install vulnetix@vulnetix-plugins
-```
-
-That's it. The plugin registers its hooks, skills, commands, and agents automatically.
-
-## Option B: Local Clone
-
-Clone the repository to a local directory:
-
-```bash
-git clone https://github.com/Vulnetix/claude-code-plugin.git ~/claude-code-plugin
-```
-
-Point Claude Code at the plugin manifest inside the clone:
-
-```
-/plugin add ~/claude-code-plugin/vulnetix
-```
+For agent-specific instructions, see the [Install](/docs/install/) section — it covers all 32 supported agents with full setup details.
 
 ## What Gets Installed
 
-Regardless of install method the plugin registers:
+The plugin registers:
 
 - **6 hooks** — pre-commit scan, manifest edit gate, post-install scan, session dashboard, stop reminder, and vuln context inject.
 - **6 skills** — `package-search`, `exploits`, `fix`, `vuln`, `exploits-search`, and `remediation`.

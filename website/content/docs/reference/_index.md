@@ -1,6 +1,6 @@
 ---
 title: Reference
-weight: 7
+weight: 8
 description: Supported ecosystems, vulnerability identifier formats, and third-party integrations.
 ---
 

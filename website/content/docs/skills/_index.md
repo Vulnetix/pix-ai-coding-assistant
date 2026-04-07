@@ -1,6 +1,6 @@
 ---
 title: Skills
-weight: 3
+weight: 4
 description: LLM-guided interactive workflows that analyze vulnerabilities, assess risk, and propose remediation using AI.
 ---
 

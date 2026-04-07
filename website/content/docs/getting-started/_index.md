@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-weight: 1
+weight: 2
 description: Install prerequisites, add the plugin, and verify your setup.
 ---
 

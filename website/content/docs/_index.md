@@ -10,7 +10,8 @@ The plugin scans your dependencies as you code, flags vulnerabilities and malici
 Free to start with a Community API key. Pro ($25/mo) unlocks the full enrichment layer — malware intelligence, safe harbour versioning, AI-generated advisories, and more.
 
 {{< cards >}}
-  {{< card link="getting-started" title="Getting Started" icon="play" subtitle="Install prerequisites, add the plugin, and verify your setup." >}}
+  {{< card link="install" title="Install" icon="download" subtitle="Install for Claude Code, Augment, Windsurf, Roo Code, and 28 more agents." >}}
+  {{< card link="getting-started" title="Getting Started" icon="play" subtitle="Prerequisites, authentication, and verification." >}}
   {{< card link="hooks" title="Hooks" icon="lightning-bolt" subtitle="Six event-driven hooks that scan automatically during your workflow." >}}
   {{< card link="skills" title="Skills" icon="academic-cap" subtitle="Six interactive skills for deep vulnerability analysis and remediation." >}}
   {{< card link="commands" title="Commands" icon="terminal" subtitle="Four deterministic CLI wrappers for raw VDB data access." >}}
