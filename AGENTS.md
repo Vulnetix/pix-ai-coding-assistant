@@ -92,8 +92,8 @@ Account management backend. The plugin depends on it for:
 | Tier | Requests/Day | Cost |
 |------|-------------|------|
 | Community | 50 | Free |
-| Pro | 2,000 | $15/mo |
-| Teams | 100,000 | $450/mo |
+| Pro | 2,000 | $20/mo |
+| Teams | 100,000 | $250/mo |
 | Enterprise | Custom | Custom |
 
 Rate limit exhaustion causes CLI commands to fail with 429 errors. The session-summary hook could surface this.
