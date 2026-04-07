@@ -41,20 +41,26 @@ Run the dashboard skill to confirm everything is working:
 
 You should see a vulnerability summary table for your project's dependencies. If you get an authentication error, re-run `vulnetix auth login`.
 
-## Updating
+## Upgrade
 
-To update to the latest version:
+Re-run the install command to pull the latest version:
 
 ```
 npx skills add Vulnetix/claude-code-plugin
 ```
 
-Running the install command again pulls the latest version and overwrites existing files.
+This overwrites existing files with the latest version. Your `.vulnetix/memory.yaml` and cached data are not affected.
 
 ## Uninstall
 
-Remove the plugin by deleting the skills directory:
+Remove the plugin skills:
 
 ```bash
 rm -rf .commandcode/skills
+```
+
+To also remove cached vulnerability data and memory:
+
+```bash
+rm -rf .vulnetix/
 ```
