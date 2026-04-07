@@ -1,6 +1,6 @@
 ---
 title: Commands
-weight: 4
+weight: 5
 description: Deterministic CLI wrappers that run vulnetix vdb subcommands directly with no LLM analysis.
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Agents
-weight: 5
+weight: 6
 description: Autonomous multi-step workflows that analyze, prioritize, and report on vulnerabilities with minimal user intervention.
 ---
 

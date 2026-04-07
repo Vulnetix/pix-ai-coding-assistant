@@ -1,6 +1,6 @@
 ---
 title: Data Structures
-weight: 6
+weight: 7
 description: The .vulnetix/ directory and its contents -- memory files, SBOMs, and PoC source caches.
 ---
 
