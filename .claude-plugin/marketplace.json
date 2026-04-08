@@ -6,7 +6,7 @@
       "name": "vulnetix",
       "source": "./vulnetix",
       "description": "Vulnerability intelligence for Claude Code — scans dependencies on commit, searches packages for risk data, analyzes exploits, and proposes fixes via the Vulnetix VDB API.",
-      "version": "1.1.0",
+      "version": "1.1.2",
       "author": { "name": "Vulnetix" }
     }
   ]
