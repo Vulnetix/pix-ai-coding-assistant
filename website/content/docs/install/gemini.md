@@ -1,7 +1,7 @@
 ---
-title: "Kiro CLI"
-weight: 15
-description: "Install the Vulnetix security plugin for Kiro CLI."
+title: "Gemini CLI"
+weight: 6
+description: "Install the Vulnetix security plugin for Gemini CLI."
 ---
 
 ## Quick Install
@@ -10,7 +10,7 @@ description: "Install the Vulnetix security plugin for Kiro CLI."
 npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
-This installs the Vulnetix security skills into your project's `.kiro/skills` directory.
+This installs the Vulnetix security skills into your project's `.gemini/skills` directory.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Before running the install command:
 
 ## What Gets Installed
 
-The plugin registers the following into `.kiro/skills`:
+The plugin registers the following into `.gemini/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
@@ -33,18 +33,18 @@ The plugin registers the following into `.kiro/skills`:
 
 ## Native Hooks
 
-Kiro CLI supports hooks natively. The plugin ships `hooks.kiro.json` pre-configured for Kiro's hook system. After install, hooks are registered automatically — no manual configuration needed.
+Gemini CLI supports hooks natively. The plugin ships `hooks.gemini.json` pre-configured for Gemini's hook system. After install, hooks are registered automatically — no manual configuration needed.
 
 The following events are wired up:
 
 | Hook | Event | Matcher | Timeout |
 |------|-------|---------|---------|
-| Pre-Commit Scan | preToolUse | execute_bash | 30s |
-| Manifest Edit Gate | preToolUse | fs_write | 30s |
-| Post-Install Scan | postToolUse | execute_bash | 120s |
-| Session Summary | agentSpawn | -- | 10s |
-| Stop Reminder | stop | -- | 10s |
-| Context Inject | userPromptSubmit | -- | 15s |
+| Pre-Commit Scan | BeforeTool | Bash | 30s |
+| Manifest Edit Gate | BeforeTool | Edit\|Write | 30s |
+| Post-Install Scan | AfterTool | Bash | 120s |
+| Session Summary | BeforeAgent | -- | 10s |
+| Stop Reminder | AfterAgent | -- | 10s |
+| Context Inject | BeforePrompt | -- | 15s |
 
 See [Hooks documentation](../../hooks/) for details on each hook.
 
@@ -73,7 +73,7 @@ This overwrites existing files with the latest version. Your `.vulnetix/memory.y
 Remove the plugin skills:
 
 ```bash
-rm -rf .kiro/skills
+rm -rf .gemini/skills
 ```
 
 To also remove cached vulnerability data and memory:

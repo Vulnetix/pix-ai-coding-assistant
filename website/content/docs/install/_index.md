@@ -21,7 +21,11 @@ Choose your agent below for full install instructions.
   {{< agent-card link="openhands" title="OpenHands" hooks="true" >}}
   {{< agent-card link="qoder" title="Qoder" hooks="true" >}}
   {{< agent-card link="qwen-code" title="Qwen Code" hooks="true" >}}
-  {{< agent-card link="kiro" title="Kiro CLI" hooks="tbc" >}}
+  {{< agent-card link="codex" title="OpenAI Codex" hooks="true" >}}
+  {{< agent-card link="copilot" title="GitHub Copilot" hooks="true" >}}
+  {{< agent-card link="gemini" title="Gemini CLI" hooks="true" >}}
+  {{< agent-card link="amazon-q" title="Amazon Q Developer" hooks="true" >}}
+  {{< agent-card link="kiro" title="Kiro CLI" hooks="true" >}}
   {{< agent-card link="windsurf" title="Windsurf" hooks="tbc" >}}
   {{< agent-card link="neovate" title="Neovate" hooks="tbc" >}}
   {{< agent-card link="openclaw" title="OpenClaw" hooks="tbc" >}}
@@ -43,5 +47,9 @@ Choose your agent below for full install instructions.
   {{< agent-card link="pochi" title="Pochi" >}}
   {{< agent-card link="trae" title="Trae" >}}
   {{< agent-card link="trae-cn" title="Trae CN" >}}
+  {{< agent-card link="aider" title="Aider" >}}
+  {{< agent-card link="cursor" title="Cursor" >}}
+  {{< agent-card link="cody" title="Sourcegraph Cody" >}}
+  {{< agent-card link="tabnine" title="Tabnine" >}}
   {{< agent-card link="adal" title="AdaL" >}}
 {{< /cards >}}

@@ -77,7 +77,19 @@ vulnetix/
 │   ├── vdb-vuln.md              # /vulnetix:vdb-vuln <vuln-id>
 │   └── vdb-vulns.md             # /vulnetix:vdb-vulns <package>
 ├── hooks/
-│   ├── hooks.json               # Hook registration (5 event types)
+│   ├── hooks.json               # Hook registration — Claude Code (5 event types)
+│   ├── hooks.augment.json       # Augment hooks config
+│   ├── hooks.codebuddy.json     # CodeBuddy hooks config
+│   ├── hooks.codex.json         # OpenAI Codex hooks config
+│   ├── hooks.copilot.json       # GitHub Copilot hooks config (camelCase events)
+│   ├── hooks.gemini.json        # Gemini CLI hooks config (PascalCase events)
+│   ├── hooks.amazonq.json       # Amazon Q Developer hooks config
+│   ├── hooks.cortex.json        # Cortex Code hooks config
+│   ├── hooks.iflow.json         # iFlow CLI hooks config
+│   ├── hooks.kiro.json          # Kiro CLI hooks config (canonical tool matchers)
+│   ├── hooks.openhands.json     # OpenHands hooks config (partial)
+│   ├── hooks.qoder.json         # Qoder hooks config
+│   ├── hooks.qwen.json          # Qwen Code hooks config (timeouts in ms)
 │   ├── pre-commit-scan.sh       # PreToolUse:Bash — scan before git commit
 │   ├── manifest-edit-scan.sh    # PreToolUse:Edit|Write — gate manifest edits
 │   ├── post-install-scan.sh     # PostToolUse:Bash — SBOM after npm/pip/go install
