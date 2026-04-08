@@ -10,7 +10,7 @@ This plugin brings vulnerability intelligence into the AI coding agent developme
 graph LR
     subgraph "Developer Machine"
         CC["Claude Code"]
-        PLG["claude-code-plugin<br/>(this repo)"]
+        PLG["pix-ai-coding-assistant<br/>(this repo)"]
         CLI["Vulnetix CLI<br/>(../cli)"]
         CC --> PLG
         PLG --> CLI

@@ -1,0 +1,71 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/pre-commit-scan.sh",
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "^edit$|^write$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/manifest-edit-scan.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/post-install-scan.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/session-summary.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/stop-reminder.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./hooks/vuln-context-inject.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

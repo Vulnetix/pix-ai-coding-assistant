@@ -10,7 +10,7 @@ Vulnerability intelligence for AI coding agents — automated dependency scannin
 - [Upgrading](#upgrading)
 - [Troubleshooting](#troubleshooting)
 - [Privacy & Security](#privacy--security)
-- [Full Documentation](https://claude-docs.vdb.vulnetix.com)
+- [Full Documentation](https://ai-docs.vulnetix.com)
 - [CLI Documentation](https://docs.cli.vulnetix.com/)
 - [VDB API Reference](https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec)
 - [GitHub App](https://github.com/marketplace/vulnetix)
@@ -20,7 +20,7 @@ Vulnerability intelligence for AI coding agents — automated dependency scannin
 Add the marketplace:
 
 ```
-/plugin marketplace add Vulnetix/claude-code-plugin
+/plugin marketplace add Vulnetix/pix-ai-coding-assistant
 ```
 
 Install the plugin:
@@ -88,7 +88,7 @@ Marketplace:
 Local clone:
 
 ```bash
-cd ~/claude-code-plugin && git pull
+cd ~/pix-ai-coding-assistant && git pull
 ```
 
 ```
@@ -96,7 +96,7 @@ cd ~/claude-code-plugin && git pull
 ```
 
 ```
-/plugin add ~/claude-code-plugin/vulnetix
+/plugin add ~/pix-ai-coding-assistant/vulnetix
 ```
 
 ## Troubleshooting
@@ -122,10 +122,10 @@ Apache-2.0 — see [LICENSE](vulnetix/LICENSE) for details.
 
 ## Resources
 
-- [Full Plugin Documentation](https://claude-docs.vdb.vulnetix.com)
+- [Full Plugin Documentation](https://ai-docs.vulnetix.com)
 - [Vulnetix CLI Documentation](https://docs.cli.vulnetix.com/)
 - [VDB API Reference](https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec)
 - [GitHub App](https://github.com/marketplace/vulnetix)
 - [Status Page](https://status.vulnetix.com)
 
-Report issues at [github.com/Vulnetix/claude-code-plugin](https://github.com/Vulnetix/claude-code-plugin).
+Report issues at [github.com/Vulnetix/pix-ai-coding-assistant](https://github.com/Vulnetix/pix-ai-coding-assistant).

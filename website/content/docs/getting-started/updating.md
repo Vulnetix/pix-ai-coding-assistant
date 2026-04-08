@@ -11,7 +11,7 @@ How you update depends on how you installed the plugin.
 If you installed with `npx skills add`, run the same command again:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This pulls the latest version and overwrites existing files in your agent's skills directory.
@@ -31,7 +31,7 @@ Claude Code pulls the latest version from the marketplace and re-registers all h
 Pull the latest changes from the repository:
 
 ```bash
-cd ~/claude-code-plugin && git pull
+cd ~/pix-ai-coding-assistant && git pull
 ```
 
 Then remove and re-add the plugin so Claude Code picks up any new or changed manifests:
@@ -41,7 +41,7 @@ Then remove and re-add the plugin so Claude Code picks up any new or changed man
 ```
 
 ```
-/plugin add ~/claude-code-plugin/vulnetix
+/plugin add ~/pix-ai-coding-assistant/vulnetix
 ```
 
 ## Verify After Updating
