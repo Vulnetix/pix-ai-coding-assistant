@@ -7,7 +7,7 @@ description: "Add the Vulnetix security plugin to your AI coding agent."
 Install the Vulnetix security plugin with a single command:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This works with any supported agent. Skills are installed into the correct directory automatically.

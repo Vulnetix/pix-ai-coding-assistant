@@ -7,7 +7,7 @@ description: "Install the Vulnetix security plugin for OpenHands."
 ## Quick Install
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This installs the Vulnetix security skills into your project's `.openhands/skills` directory.
@@ -31,6 +31,22 @@ The plugin registers the following into `.openhands/skills`:
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
+## Native Hooks
+
+OpenHands supports hooks natively (PreToolUse and PostToolUse events). The plugin ships `hooks.openhands.json` pre-configured for OpenHands' hook system. After install, hooks are registered automatically — no manual configuration needed.
+
+The following events are wired up:
+
+| Hook | Event | Matcher | Timeout |
+|------|-------|---------|---------|
+| Pre-Commit Scan | PreToolUse | Bash | 30s |
+| Manifest Edit Gate | PreToolUse | Edit\|Write | 30s |
+| Post-Install Scan | PostToolUse | Bash | 120s |
+
+> **Note:** OpenHands currently supports PreToolUse and PostToolUse events only. SessionStart, Stop, and UserPromptSubmit hooks will be added when OpenHands expands its hooks API.
+
+See [Hooks documentation](../../hooks/) for details on each hook.
+
 ## Verify Installation
 
 Run the dashboard skill to confirm everything is working:
@@ -46,7 +62,7 @@ You should see a vulnerability summary table for your project's dependencies. If
 Re-run the install command to pull the latest version:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This overwrites existing files with the latest version. Your `.vulnetix/memory.yaml` and cached data are not affected.

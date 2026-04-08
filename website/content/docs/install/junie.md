@@ -7,7 +7,7 @@ description: "Install the Vulnetix security plugin for Junie."
 ## Quick Install
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This installs the Vulnetix security skills into your project's `.junie/skills` directory.
@@ -46,7 +46,7 @@ You should see a vulnerability summary table for your project's dependencies. If
 Re-run the install command to pull the latest version:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This overwrites existing files with the latest version. Your `.vulnetix/memory.yaml` and cached data are not affected.

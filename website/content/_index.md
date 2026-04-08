@@ -3,7 +3,7 @@ title: Vulnetix AI Coding Agent Plugin
 layout: hextra-home
 ---
 
-{{< hextra/hero-badge link="https://github.com/Vulnetix/claude-code-plugin" >}}
+{{< hextra/hero-badge link="https://github.com/Vulnetix/pix-ai-coding-assistant" >}}
   <span>GitHub</span>
   {{< icon name="arrow-circle-right" attributes="height=14" >}}
 {{< /hextra/hero-badge >}}
@@ -22,7 +22,7 @@ layout: hextra-home
 
 <div class="vx-cta-row hx-mb-4">
   <a href="docs/getting-started" class="vx-btn-primary">Get Started</a>
-  <a href="https://github.com/Vulnetix/claude-code-plugin" class="vx-btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
+  <a href="https://github.com/Vulnetix/pix-ai-coding-assistant" class="vx-btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
 </div>
 <a href="https://www.vulnetix.com/vdb" class="vx-subtle-link" target="_blank" rel="noopener">Learn more about Vulnetix VDB &rarr;</a>
 
@@ -162,7 +162,7 @@ All findings, decisions, and scan history persist in the `.vulnetix/` directory.
 <div class="vx-footer-links">
   <a href="https://docs.cli.vulnetix.com" target="_blank" rel="noopener">CLI Docs</a>
   <a href="https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec" target="_blank" rel="noopener">VDB API Docs</a>
-  <a href="https://github.com/Vulnetix/claude-code-plugin" target="_blank" rel="noopener">GitHub</a>
+  <a href="https://github.com/Vulnetix/pix-ai-coding-assistant" target="_blank" rel="noopener">GitHub</a>
   <a href="https://www.vulnetix.com" target="_blank" rel="noopener">vulnetix.com</a>
   <a href="/terms/">Terms of Service</a>
 </div>

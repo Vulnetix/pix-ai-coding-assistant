@@ -7,7 +7,7 @@ description: "Install the Vulnetix security plugin for Qwen Code."
 ## Quick Install
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This installs the Vulnetix security skills into your project's `.qwen/skills` directory.
@@ -31,6 +31,25 @@ The plugin registers the following into `.qwen/skills`:
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
+## Native Hooks
+
+Qwen Code supports hooks natively. The plugin ships `hooks.qwen.json` pre-configured for Qwen Code's hook system. After install, hooks are registered automatically — no manual configuration needed.
+
+The following events are wired up:
+
+| Hook | Event | Matcher | Timeout |
+|------|-------|---------|---------|
+| Pre-Commit Scan | PreToolUse | Bash | 30,000ms |
+| Manifest Edit Gate | PreToolUse | Edit\|Write | 30,000ms |
+| Post-Install Scan | PostToolUse | Bash | 120,000ms |
+| Session Summary | SessionStart | -- | 10,000ms |
+| Stop Reminder | Stop | -- | 10,000ms |
+| Context Inject | UserPromptSubmit | -- | 15,000ms |
+
+> **Note:** Qwen Code uses milliseconds for timeout values.
+
+See [Hooks documentation](../../hooks/) for details on each hook.
+
 ## Verify Installation
 
 Run the dashboard skill to confirm everything is working:
@@ -46,7 +65,7 @@ You should see a vulnerability summary table for your project's dependencies. If
 Re-run the install command to pull the latest version:
 
 ```
-npx skills add Vulnetix/claude-code-plugin
+npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This overwrites existing files with the latest version. Your `.vulnetix/memory.yaml` and cached data are not affected.

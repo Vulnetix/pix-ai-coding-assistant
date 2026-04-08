@@ -46,3 +46,20 @@ Hooks are declared in the plugin's `hooks.json` file and registered with Claude 
 - **matcher** -- optional tool name filter (e.g., `Bash`, `Edit|Write`)
 - **script** -- path to the shell script
 - **timeout** -- maximum execution time in seconds
+
+## Agent-specific configuration
+
+The same six hooks work across multiple agents. Each agent uses its own config file format — the plugin ships a pre-built config for each:
+
+| Agent | Config file | Notes |
+|-------|------------|-------|
+| Claude Code | `hooks.json` | Default |
+| Augment | `hooks.augment.json` | |
+| CodeBuddy | `hooks.codebuddy.json` | Regex matchers |
+| Cortex Code | `hooks.cortex.json` | |
+| iFlow CLI | `hooks.iflow.json` | |
+| OpenHands | `hooks.openhands.json` | PreToolUse + PostToolUse only |
+| Qoder | `hooks.qoder.json` | |
+| Qwen Code | `hooks.qwen.json` | Timeouts in milliseconds |
+
+Hooks are registered automatically when you install via `npx skills add`.

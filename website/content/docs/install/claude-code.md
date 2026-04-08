@@ -9,7 +9,7 @@ description: "Install the Vulnetix security plugin for Claude Code."
 Add the Vulnetix marketplace to Claude Code:
 
 ```
-/plugin marketplace add Vulnetix/claude-code-plugin
+/plugin marketplace add Vulnetix/pix-ai-coding-assistant
 ```
 
 Then install the plugin:
@@ -25,13 +25,13 @@ The plugin registers its hooks, skills, commands, and agents automatically.
 Clone the repository to a local directory:
 
 ```bash
-git clone https://github.com/Vulnetix/claude-code-plugin.git ~/claude-code-plugin
+git clone https://github.com/Vulnetix/pix-ai-coding-assistant.git ~/pix-ai-coding-assistant
 ```
 
 Point Claude Code at the plugin manifest:
 
 ```
-/plugin add ~/claude-code-plugin/vulnetix
+/plugin add ~/pix-ai-coding-assistant/vulnetix
 ```
 
 ## Prerequisites
@@ -77,7 +77,7 @@ Re-run the marketplace install to pull the latest version:
 Or if using a local clone:
 
 ```bash
-cd ~/claude-code-plugin && git pull
+cd ~/pix-ai-coding-assistant && git pull
 ```
 
 Your `.vulnetix/memory.yaml` and cached data are not affected.

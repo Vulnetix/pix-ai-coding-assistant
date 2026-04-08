@@ -1,4 +1,4 @@
-module github.com/Vulnetix/claude-code-plugin/website
+module github.com/Vulnetix/pix-ai-coding-assistant/website
 
 go 1.26
 

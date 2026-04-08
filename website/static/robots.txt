@@ -22,4 +22,4 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-Sitemap: https://claude-docs.vdb.vulnetix.com/sitemap.xml
+Sitemap: https://ai-docs.vulnetix.com/sitemap.xml
