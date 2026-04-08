@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "./hooks/pre-commit-scan.sh"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "./hooks/manifest-edit-scan.sh"
+      }
+    ],
+    "afterShellExecution": [
+      {
+        "command": "./hooks/post-install-scan.sh"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "./hooks/session-summary.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": "./hooks/stop-reminder.sh"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "./hooks/vuln-context-inject.sh"
+      }
+    ]
+  }
+}

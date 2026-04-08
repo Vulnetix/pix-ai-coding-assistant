@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Cline PreToolUse hook dispatcher
+# Routes to Vulnetix pre-commit or manifest-edit hooks based on tool name.
+# Cline passes JSON via stdin with .preToolUse.tool field.
+
+set -euo pipefail
+
+HOOK_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.preToolUse.tool // empty')
+
+case "$TOOL" in
+  execute_command|terminal|bash|shell)
+    echo "$INPUT" | bash "$HOOK_DIR/pre-commit-scan.sh"
+    ;;
+  write_to_file|replace_in_file|insert_code_block)
+    echo "$INPUT" | bash "$HOOK_DIR/manifest-edit-scan.sh"
+    ;;
+esac
