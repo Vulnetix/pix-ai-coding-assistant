@@ -31,6 +31,28 @@ The plugin registers the following into `skills`:
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
+## Native Hooks
+
+OpenClaw supports hooks via TypeScript handler modules. The plugin ships pre-built hook directories in `hooks/ts/openclaw/` with `HOOK.md` metadata and `handler.ts` implementations.
+
+The following events are wired up:
+
+| Hook | Event | Action |
+|------|-------|--------|
+| Pre-Commit Scan | command | Scan before git commit |
+| Manifest Edit Gate | message:preprocessed | Gate manifest edits |
+| Post-Install Scan | command | SBOM after package install |
+| Session Summary | agent:bootstrap | Vulnerability dashboard |
+| Context Inject | message:received | Inject vuln context |
+
+After install, copy the hook directories to your workspace:
+
+```bash
+cp -r hooks/ts/openclaw/* workspace/hooks/
+```
+
+See [Hooks documentation](../../hooks/) for details on each hook.
+
 ## Verify Installation
 
 Run the dashboard skill to confirm everything is working:

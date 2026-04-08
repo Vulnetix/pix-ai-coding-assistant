@@ -12,7 +12,7 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 
 This works with any supported agent. Skills are installed into the correct directory automatically.
 
-For agent-specific instructions, see the [Install](/docs/install/) section — it covers all 32 supported agents with full setup details.
+For agent-specific instructions, see the [Install](/docs/install/) section — it covers all 41 supported agents with full setup details.
 
 ## What Gets Installed
 

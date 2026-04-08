@@ -31,6 +31,26 @@ The plugin registers the following into `.pi/skills`:
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
+## Native Hooks
+
+Pi supports hooks via its TypeScript extension API. The plugin ships `pi-extension.ts` which registers `beforeToolCall` and `afterToolCall` handlers, wrapping the shared Vulnetix bash scripts.
+
+The following lifecycle events are wired up:
+
+| Hook | Event | Tools Matched | Action |
+|------|-------|---------------|--------|
+| Pre-Commit Scan | beforeToolCall | bash, shell, terminal | Block git commit if vulns found |
+| Manifest Edit Gate | beforeToolCall | write_file, edit_file | Gate manifest edits |
+| Post-Install Scan | afterToolCall | bash, shell, terminal | SBOM after package install |
+
+After install, register the extension in your Pi configuration:
+
+```bash
+cp hooks/ts/pi-extension.ts .pi/extensions/vulnetix.ts
+```
+
+See [Hooks documentation](../../hooks/) for details on each hook.
+
 ## Verify Installation
 
 Run the dashboard skill to confirm everything is working:

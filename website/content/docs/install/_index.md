@@ -29,9 +29,9 @@ Choose your agent below for full install instructions.
   {{< agent-card link="cursor" title="Cursor" hooks="true" >}}
   {{< agent-card link="cline" title="Cline" hooks="true" >}}
   {{< agent-card link="windsurf" title="Windsurf" hooks="true" >}}
-  {{< agent-card link="neovate" title="Neovate" hooks="tbc" >}}
-  {{< agent-card link="openclaw" title="OpenClaw" hooks="tbc" >}}
-  {{< agent-card link="pi" title="Pi" hooks="tbc" >}}
+  {{< agent-card link="neovate" title="Neovate" hooks="true" >}}
+  {{< agent-card link="openclaw" title="OpenClaw" hooks="true" >}}
+  {{< agent-card link="pi" title="Pi" hooks="true" >}}
   {{< agent-card link="droid" title="Droid" hooks="tbc" >}}
   {{< agent-card link="zencoder" title="Zencoder" hooks="tbc" >}}
   {{< agent-card link="continue" title="Continue" hooks="tbc" >}}
