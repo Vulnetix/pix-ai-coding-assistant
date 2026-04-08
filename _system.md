@@ -90,6 +90,7 @@ vulnetix/
 │   ├── hooks.openhands.json     # OpenHands hooks config (partial)
 │   ├── hooks.qoder.json         # Qoder hooks config
 │   ├── hooks.qwen.json          # Qwen Code hooks config (timeouts in ms)
+│   ├── hooks.windsurf.json      # Windsurf hooks config (snake_case events)
 │   ├── hooks.cursor.json        # Cursor hooks config (Cursor event names)
 │   ├── cline/                   # Cline dispatcher scripts
 │   │   ├── PreToolUse           # Routes to pre-commit/manifest-edit by tool name

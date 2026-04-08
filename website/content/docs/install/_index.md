@@ -28,7 +28,7 @@ Choose your agent below for full install instructions.
   {{< agent-card link="kiro" title="Kiro CLI" hooks="true" >}}
   {{< agent-card link="cursor" title="Cursor" hooks="true" >}}
   {{< agent-card link="cline" title="Cline" hooks="true" >}}
-  {{< agent-card link="windsurf" title="Windsurf" hooks="tbc" >}}
+  {{< agent-card link="windsurf" title="Windsurf" hooks="true" >}}
   {{< agent-card link="neovate" title="Neovate" hooks="tbc" >}}
   {{< agent-card link="openclaw" title="OpenClaw" hooks="tbc" >}}
   {{< agent-card link="pi" title="Pi" hooks="tbc" >}}
