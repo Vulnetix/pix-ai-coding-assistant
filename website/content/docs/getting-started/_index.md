@@ -4,7 +4,7 @@ weight: 2
 description: Install prerequisites, add the plugin, and verify your setup.
 ---
 
-Get up and running with the Vulnetix Claude Code Plugin in a few minutes. Follow these guides in order or jump to the section you need.
+Get up and running with the Vulnetix AI Coding Agent Plugin in a few minutes. Follow these guides in order or jump to the section you need.
 
 {{< cards >}}
   {{< card link="prerequisites" title="Prerequisites" icon="download" subtitle="Install the Vulnetix CLI, authenticate, and set up jq." >}}

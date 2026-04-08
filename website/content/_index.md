@@ -1,5 +1,5 @@
 ---
-title: Vulnetix Claude Code Plugin
+title: Vulnetix AI Coding Agent Plugin
 layout: hextra-home
 ---
 
@@ -10,7 +10,7 @@ layout: hextra-home
 
 <div class="hx-mt-8 hx-mb-8">
 {{< hextra/hero-headline >}}
-  Vulnerability Intelligence&nbsp;<br class="sm:hx-block hx-hidden" />for Claude Code
+  Vulnerability Intelligence&nbsp;<br class="sm:hx-block hx-hidden" />for AI Coding Agents
 {{< /hextra/hero-headline >}}
 </div>
 
@@ -32,7 +32,7 @@ layout: hextra-home
 
 ## Powered by Vulnetix VDB
 
-This plugin connects Claude Code to [Vulnetix VDB](https://www.vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
+This plugin connects your coding agent to [Vulnetix VDB](https://www.vulnetix.com/vdb), the most comprehensive open-access vulnerability database available. 160 upstream sources &mdash; CVE, GHSA, OSV, vendor advisories, and many more &mdash; aggregated, normalised, and enriched with exploit intelligence, malware associations, and safe upgrade paths.
 
 Every scan, lookup, and recommendation in this plugin is backed by live VDB data.
 
@@ -86,7 +86,7 @@ Every scan, lookup, and recommendation in this plugin is backed by live VDB data
 
 ## Automatic Security Scanning
 
-Six event-driven hooks run automatically in your Claude Code workflow. Scan dependencies on every commit, detect vulnerabilities after package installs, gate manifest edits with risk data, and surface prior context when you mention a CVE.
+Six event-driven hooks run automatically in your coding agent workflow. Scan dependencies on every commit, detect vulnerabilities after package installs, gate manifest edits with risk data, and surface prior context when you mention a CVE.
 
 <ul>
   <li>Pre-commit scanning</li>

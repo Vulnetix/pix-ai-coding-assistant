@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting
 weight: 9
-description: Common issues, diagnostics, and fixes for the Vulnetix Claude Code Plugin.
+description: Common issues, diagnostics, and fixes for the Vulnetix AI Coding Agent Plugin.
 ---
 
 ## Hook Not Triggering

@@ -1,10 +1,10 @@
 ---
 title: Supported Ecosystems
 weight: 1
-description: Package ecosystems, registries, and manifest files supported by the Vulnetix Claude Code Plugin.
+description: Package ecosystems, registries, and manifest files supported by the Vulnetix AI Coding Agent Plugin.
 ---
 
-The Vulnetix Claude Code Plugin supports seven package ecosystems. Hooks automatically detect manifest files for each ecosystem, and commands accept ecosystem identifiers for filtering and context.
+The Vulnetix AI Coding Agent Plugin supports seven package ecosystems. Hooks automatically detect manifest files for each ecosystem, and commands accept ecosystem identifiers for filtering and context.
 
 ## Ecosystem Table
 

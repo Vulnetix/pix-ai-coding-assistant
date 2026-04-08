@@ -1,10 +1,10 @@
 ---
 title: Integrations
 weight: 3
-description: Third-party data sources and GitHub features integrated by the Vulnetix Claude Code Plugin.
+description: Third-party data sources and GitHub features integrated by the Vulnetix AI Coding Agent Plugin.
 ---
 
-The Vulnetix Claude Code Plugin pulls data from multiple sources to enrich vulnerability intelligence. This page documents each integration and how it surfaces in the plugin.
+The Vulnetix AI Coding Agent Plugin pulls data from multiple sources to enrich vulnerability intelligence. This page documents each integration and how it surfaces in the plugin.
 
 ## GitHub Dependabot
 

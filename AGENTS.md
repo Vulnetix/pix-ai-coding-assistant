@@ -1,8 +1,8 @@
-# Vulnetix Claude Code Plugin — Product Requirements
+# Vulnetix AI Coding Agent Plugin — Product Requirements
 
 ## Purpose
 
-This plugin brings vulnerability intelligence into the Claude Code development loop. Developers get automatic security scanning on commit/install, on-demand vulnerability analysis, exploit intelligence, and AI-driven remediation — all without leaving their editor.
+This plugin brings vulnerability intelligence into the AI coding agent development loop. Developers get automatic security scanning on commit/install, on-demand vulnerability analysis, exploit intelligence, and AI-driven remediation — all without leaving their editor.
 
 ## System Context
 

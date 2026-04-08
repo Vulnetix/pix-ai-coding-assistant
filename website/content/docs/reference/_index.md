@@ -4,7 +4,7 @@ weight: 8
 description: Supported ecosystems, vulnerability identifier formats, and third-party integrations.
 ---
 
-Reference material for the Vulnetix Claude Code Plugin.
+Reference material for the Vulnetix AI Coding Agent Plugin.
 
 {{< cards >}}
   {{< card link="ecosystems" title="Supported Ecosystems" subtitle="Package ecosystems, registries, and manifest files." >}}
