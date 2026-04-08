@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Cline PostToolUse hook dispatcher
+# Routes to Vulnetix post-install hook for shell executions.
+# Cline passes JSON via stdin with .postToolUse.tool field.
+
+set -euo pipefail
+
+HOOK_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.postToolUse.tool // empty')
+
+case "$TOOL" in
+  execute_command|terminal|bash|shell)
+    echo "$INPUT" | bash "$HOOK_DIR/post-install-scan.sh"
+    ;;
+esac

@@ -90,6 +90,10 @@ vulnetix/
 │   ├── hooks.openhands.json     # OpenHands hooks config (partial)
 │   ├── hooks.qoder.json         # Qoder hooks config
 │   ├── hooks.qwen.json          # Qwen Code hooks config (timeouts in ms)
+│   ├── hooks.cursor.json        # Cursor hooks config (Cursor event names)
+│   ├── cline/                   # Cline dispatcher scripts
+│   │   ├── PreToolUse           # Routes to pre-commit/manifest-edit by tool name
+│   │   └── PostToolUse          # Routes to post-install by tool name
 │   ├── pre-commit-scan.sh       # PreToolUse:Bash — scan before git commit
 │   ├── manifest-edit-scan.sh    # PreToolUse:Edit|Write — gate manifest edits
 │   ├── post-install-scan.sh     # PostToolUse:Bash — SBOM after npm/pip/go install
@@ -176,3 +180,19 @@ When `gh` CLI is authenticated, skills query:
 - Dependabot alerts (`gh api repos/{owner}/{repo}/dependabot/alerts`)
 - CodeQL analyses (`gh api repos/{owner}/{repo}/code-scanning/alerts`)
 - Secret scanning (`gh api repos/{owner}/{repo}/secret-scanning/alerts`)
+
+## Not Worth Pursuing
+
+Evaluated and ruled out — no hooks, skills, or plugin extensibility relevant to this plugin:
+
+- **Auto-GPT Forge** — framework, not a coding agent
+- **Blackbox AI** — no hooks/skills documentation
+- **bolt.new** — web builder, no extensibility API
+- **Lovable** — web builder, not a coding agent
+- **Mentat** — minimal extensibility, no hooks/skills
+- **NVIDIA OpenShell** — sandbox runtime, not a coding agent
+- **PearAI** — inherits Cline hooks, not standalone
+- **Replit Agent** — cloud IDE, no extensibility API
+- **Supermaven** — autocomplete only, no agent mode
+- **v0** — web builder, no extensibility API
+- **Warp** — terminal AI, MCP only, no hooks/skills

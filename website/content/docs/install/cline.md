@@ -1,7 +1,7 @@
 ---
-title: "Cursor"
-weight: 31
-description: "Install the Vulnetix security plugin for Cursor."
+title: "Cline"
+weight: 8
+description: "Install the Vulnetix security plugin for Cline."
 ---
 
 ## Quick Install
@@ -10,7 +10,7 @@ description: "Install the Vulnetix security plugin for Cursor."
 npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
-This installs the Vulnetix security skills into your project's `.cursor/skills` directory.
+This installs the Vulnetix security skills into your project's `.cline/skills` directory.
 
 ## Prerequisites
 
@@ -22,29 +22,34 @@ Before running the install command:
 
 ## What Gets Installed
 
-The plugin registers the following into `.cursor/skills`:
+The plugin registers the following into `.cline/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
-| **Hooks** | 6 | Pre-commit scan, manifest edit gate, post-install scan, session dashboard, stop reminder, vuln context inject |
+| **Hooks** | 2 | Pre-tool-use dispatcher (commit scan + manifest gate), post-tool-use dispatcher (install scan) |
 | **Skills** | 6 | `package-search`, `exploits`, `fix`, `vuln`, `exploits-search`, `remediation` |
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
 ## Native Hooks
 
-Cursor supports hooks natively. The plugin ships `hooks.cursor.json` pre-configured for Cursor's hook system. After install, hooks are registered automatically — no manual configuration needed.
+Cline supports hooks natively via executable scripts. The plugin ships dispatcher scripts in `hooks/cline/` that route to the shared Vulnetix hook scripts based on tool name.
 
 The following events are wired up:
 
-| Hook | Event | Timeout |
-|------|-------|---------|
-| Pre-Commit Scan | beforeShellExecution | 30s |
-| Manifest Edit Gate | afterFileEdit | 30s |
-| Post-Install Scan | afterShellExecution | 120s |
-| Session Summary | sessionStart | 10s |
-| Stop Reminder | stop | 10s |
-| Context Inject | beforeSubmitPrompt | 15s |
+| Hook | Event | Tools Matched | Action |
+|------|-------|---------------|--------|
+| Pre-Commit Scan | PreToolUse | execute_command, terminal, bash, shell | Scan before git commit |
+| Manifest Edit Gate | PreToolUse | write_to_file, replace_in_file, insert_code_block | Gate manifest edits |
+| Post-Install Scan | PostToolUse | execute_command, terminal, bash, shell | SBOM after npm/pip/go install |
+
+After install, copy the dispatcher scripts to your project:
+
+```bash
+cp hooks/cline/PreToolUse .clinerules/hooks/PreToolUse
+cp hooks/cline/PostToolUse .clinerules/hooks/PostToolUse
+chmod +x .clinerules/hooks/PreToolUse .clinerules/hooks/PostToolUse
+```
 
 See [Hooks documentation](../../hooks/) for details on each hook.
 
@@ -73,7 +78,7 @@ This overwrites existing files with the latest version. Your `.vulnetix/memory.y
 Remove the plugin skills:
 
 ```bash
-rm -rf .cursor/skills
+rm -rf .cline/skills
 ```
 
 To also remove cached vulnerability data and memory:

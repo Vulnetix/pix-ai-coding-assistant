@@ -1,7 +1,7 @@
 ---
-title: "Cursor"
-weight: 31
-description: "Install the Vulnetix security plugin for Cursor."
+title: "Zed"
+weight: 34
+description: "Install the Vulnetix security plugin for Zed."
 ---
 
 ## Quick Install
@@ -10,7 +10,7 @@ description: "Install the Vulnetix security plugin for Cursor."
 npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
-This installs the Vulnetix security skills into your project's `.cursor/skills` directory.
+This installs the Vulnetix security skills into your project's `.zed/skills` directory.
 
 ## Prerequisites
 
@@ -22,31 +22,13 @@ Before running the install command:
 
 ## What Gets Installed
 
-The plugin registers the following into `.cursor/skills`:
+The plugin registers the following into `.zed/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
-| **Hooks** | 6 | Pre-commit scan, manifest edit gate, post-install scan, session dashboard, stop reminder, vuln context inject |
 | **Skills** | 6 | `package-search`, `exploits`, `fix`, `vuln`, `exploits-search`, `remediation` |
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
-
-## Native Hooks
-
-Cursor supports hooks natively. The plugin ships `hooks.cursor.json` pre-configured for Cursor's hook system. After install, hooks are registered automatically — no manual configuration needed.
-
-The following events are wired up:
-
-| Hook | Event | Timeout |
-|------|-------|---------|
-| Pre-Commit Scan | beforeShellExecution | 30s |
-| Manifest Edit Gate | afterFileEdit | 30s |
-| Post-Install Scan | afterShellExecution | 120s |
-| Session Summary | sessionStart | 10s |
-| Stop Reminder | stop | 10s |
-| Context Inject | beforeSubmitPrompt | 15s |
-
-See [Hooks documentation](../../hooks/) for details on each hook.
 
 ## Verify Installation
 
@@ -73,7 +55,7 @@ This overwrites existing files with the latest version. Your `.vulnetix/memory.y
 Remove the plugin skills:
 
 ```bash
-rm -rf .cursor/skills
+rm -rf .zed/skills
 ```
 
 To also remove cached vulnerability data and memory:
