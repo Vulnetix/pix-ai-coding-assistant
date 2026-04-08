@@ -1,0 +1,66 @@
+{{- /*
+  Agent install card with feature chips.
+
+  @param {string} link       Link to the agent's install page.
+  @param {string} title      Agent name.
+  @param {string} subtitle   Skills directory path.
+  @param {string} skills     "true" (default) | "false" | "tbc"
+  @param {string} marketplace "true" | "false" (default) | "tbc"
+  @param {string} plugins    "true" | "false" (default) | "tbc"
+  @param {string} hooks      "true" | "false" (default) | "tbc"
+  @param {string} commands   "true" (default) | "false" | "tbc"
+  @param {string} agents     "true" (default) | "false" | "tbc"
+*/ -}}
+
+{{- $link := .Get "link" -}}
+{{- $title := .Get "title" -}}
+{{- $subtitle := .Get "subtitle" -}}
+
+{{- $features := slice -}}
+{{- $featureNames := slice "skills" "marketplace" "plugins" "hooks" "commands" "agents" -}}
+{{- $featureLabels := dict "skills" "SKILLS.md" "marketplace" "Marketplace" "plugins" "Plugin" "hooks" "Hooks" "commands" "Commands" "agents" "Agents" -}}
+{{- $featureIcons := dict "skills" "document-text" "marketplace" "shopping-cart" "plugins" "puzzle" "hooks" "link" "commands" "terminal" "agents" "chip" -}}
+{{- $defaults := dict "skills" "true" "marketplace" "false" "plugins" "false" "hooks" "false" "commands" "true" "agents" "true" -}}
+
+{{- range $name := $featureNames -}}
+  {{- $val := $.Get $name | default (index $defaults $name) -}}
+  {{- if ne $val "false" -}}
+    {{- $features = $features | append (dict "name" $name "label" (index $featureLabels $name) "icon" (index $featureIcons $name) "tbc" (eq $val "tbc")) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $external := strings.HasPrefix $link "http" -}}
+{{- $href := cond (strings.HasPrefix $link "/") ($link | relURL) $link -}}
+
+<a
+  class="hextra-card agent-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"
+  {{- if $link }}
+    href="{{ $href }}"
+    {{ with $external }}target="_blank" rel="noreferrer"{{ end -}}
+  {{- end -}}
+>
+  <div class="hx:mt-auto">
+    <span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">
+      {{- $title -}}
+    </span>
+    {{- with $subtitle -}}
+      <div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mt-2">{{- $subtitle | markdownify -}}</div>
+    {{- end -}}
+  </div>
+
+  <div class="agent-card-chips hx:flex hx:flex-wrap hx:gap-1.5 hx:px-4 hx:pb-4 hx:pt-3">
+    {{- range $f := $features -}}
+      {{- if $f.tbc -}}
+        <span class="agent-chip agent-chip--tbc" title="{{ $f.label }} (coming soon)">
+          {{- partial "utils/icon" (dict "name" $f.icon "attributes" "height=11") -}}
+          {{ $f.label }}
+        </span>
+      {{- else -}}
+        <span class="agent-chip agent-chip--ok" title="{{ $f.label }}">
+          {{- partial "utils/icon" (dict "name" $f.icon "attributes" "height=11") -}}
+          {{ $f.label }}
+        </span>
+      {{- end -}}
+    {{- end -}}
+  </div>
+</a>
