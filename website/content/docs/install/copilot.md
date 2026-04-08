@@ -1,7 +1,7 @@
 ---
-title: "Kiro CLI"
-weight: 15
-description: "Install the Vulnetix security plugin for Kiro CLI."
+title: "GitHub Copilot"
+weight: 4
+description: "Install the Vulnetix security plugin for GitHub Copilot CLI."
 ---
 
 ## Quick Install
@@ -10,7 +10,7 @@ description: "Install the Vulnetix security plugin for Kiro CLI."
 npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
-This installs the Vulnetix security skills into your project's `.kiro/skills` directory.
+This installs the Vulnetix security skills into your project's `.copilot/skills` directory.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Before running the install command:
 
 ## What Gets Installed
 
-The plugin registers the following into `.kiro/skills`:
+The plugin registers the following into `.copilot/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
@@ -33,18 +33,18 @@ The plugin registers the following into `.kiro/skills`:
 
 ## Native Hooks
 
-Kiro CLI supports hooks natively. The plugin ships `hooks.kiro.json` pre-configured for Kiro's hook system. After install, hooks are registered automatically — no manual configuration needed.
+GitHub Copilot CLI supports hooks natively. The plugin ships `hooks.copilot.json` pre-configured for Copilot's hook system. After install, hooks are registered automatically — no manual configuration needed.
 
 The following events are wired up:
 
 | Hook | Event | Matcher | Timeout |
 |------|-------|---------|---------|
-| Pre-Commit Scan | preToolUse | execute_bash | 30s |
-| Manifest Edit Gate | preToolUse | fs_write | 30s |
-| Post-Install Scan | postToolUse | execute_bash | 120s |
-| Session Summary | agentSpawn | -- | 10s |
-| Stop Reminder | stop | -- | 10s |
-| Context Inject | userPromptSubmit | -- | 15s |
+| Pre-Commit Scan | preToolUse | Bash | 30s |
+| Manifest Edit Gate | preToolUse | Edit\|Write | 30s |
+| Post-Install Scan | postToolUse | Bash | 120s |
+| Session Summary | sessionStart | -- | 10s |
+| Stop Reminder | agentStop | -- | 10s |
+| Context Inject | userPromptSubmitted | -- | 15s |
 
 See [Hooks documentation](../../hooks/) for details on each hook.
 
@@ -73,7 +73,7 @@ This overwrites existing files with the latest version. Your `.vulnetix/memory.y
 Remove the plugin skills:
 
 ```bash
-rm -rf .kiro/skills
+rm -rf .copilot/skills
 ```
 
 To also remove cached vulnerability data and memory:

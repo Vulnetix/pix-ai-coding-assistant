@@ -1,7 +1,7 @@
 ---
-title: "Kiro CLI"
-weight: 15
-description: "Install the Vulnetix security plugin for Kiro CLI."
+title: "Cursor"
+weight: 31
+description: "Install the Vulnetix security plugin for Cursor."
 ---
 
 ## Quick Install
@@ -10,7 +10,7 @@ description: "Install the Vulnetix security plugin for Kiro CLI."
 npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
-This installs the Vulnetix security skills into your project's `.kiro/skills` directory.
+This installs the Vulnetix security skills into your project's `.cursor/skills` directory.
 
 ## Prerequisites
 
@@ -22,31 +22,13 @@ Before running the install command:
 
 ## What Gets Installed
 
-The plugin registers the following into `.kiro/skills`:
+The plugin registers the following into `.cursor/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
-| **Hooks** | 6 | Pre-commit scan, manifest edit gate, post-install scan, session dashboard, stop reminder, vuln context inject |
 | **Skills** | 6 | `package-search`, `exploits`, `fix`, `vuln`, `exploits-search`, `remediation` |
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
-
-## Native Hooks
-
-Kiro CLI supports hooks natively. The plugin ships `hooks.kiro.json` pre-configured for Kiro's hook system. After install, hooks are registered automatically — no manual configuration needed.
-
-The following events are wired up:
-
-| Hook | Event | Matcher | Timeout |
-|------|-------|---------|---------|
-| Pre-Commit Scan | preToolUse | execute_bash | 30s |
-| Manifest Edit Gate | preToolUse | fs_write | 30s |
-| Post-Install Scan | postToolUse | execute_bash | 120s |
-| Session Summary | agentSpawn | -- | 10s |
-| Stop Reminder | stop | -- | 10s |
-| Context Inject | userPromptSubmit | -- | 15s |
-
-See [Hooks documentation](../../hooks/) for details on each hook.
 
 ## Verify Installation
 
@@ -73,7 +55,7 @@ This overwrites existing files with the latest version. Your `.vulnetix/memory.y
 Remove the plugin skills:
 
 ```bash
-rm -rf .kiro/skills
+rm -rf .cursor/skills
 ```
 
 To also remove cached vulnerability data and memory:

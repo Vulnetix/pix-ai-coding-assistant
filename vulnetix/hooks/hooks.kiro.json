@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "execute_bash",
+        "command": "bash ./hooks/pre-commit-scan.sh"
+      },
+      {
+        "matcher": "fs_write",
+        "command": "bash ./hooks/manifest-edit-scan.sh"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "execute_bash",
+        "command": "bash ./hooks/post-install-scan.sh"
+      }
+    ],
+    "agentSpawn": [
+      {
+        "command": "bash ./hooks/session-summary.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": "bash ./hooks/stop-reminder.sh"
+      }
+    ],
+    "userPromptSubmit": [
+      {
+        "command": "bash ./hooks/vuln-context-inject.sh"
+      }
+    ]
+  }
+}
