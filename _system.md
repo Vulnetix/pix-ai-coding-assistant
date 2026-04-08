@@ -95,6 +95,11 @@ vulnetix/
 │   ├── cline/                   # Cline dispatcher scripts
 │   │   ├── PreToolUse           # Routes to pre-commit/manifest-edit by tool name
 │   │   └── PostToolUse          # Routes to post-install by tool name
+│   ├── ts/                      # TypeScript wrappers (Tier 3 agents)
+│   │   ├── run-hook.ts          # Shared utility — shells out to bash scripts
+│   │   ├── pi-extension.ts      # Pi extension entry point
+│   │   ├── neovate-plugin.ts    # Neovate plugin entry point
+│   │   └── openclaw/            # OpenClaw hook directories (HOOK.md + handler.ts)
 │   ├── pre-commit-scan.sh       # PreToolUse:Bash — scan before git commit
 │   ├── manifest-edit-scan.sh    # PreToolUse:Edit|Write — gate manifest edits
 │   ├── post-install-scan.sh     # PostToolUse:Bash — SBOM after npm/pip/go install

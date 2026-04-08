@@ -31,6 +31,29 @@ The plugin registers the following into `.neovate/skills`:
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
 
+## Native Hooks
+
+Neovate uses a TypeScript plugin system. The plugin ships `neovate-plugin.ts` which registers hooks via Neovate's extension API, wrapping the shared Vulnetix bash scripts.
+
+The following lifecycle events are wired up:
+
+| Hook | Extension Point | Action |
+|------|----------------|--------|
+| Pre-Commit Scan | onBeforeToolCall | Block git commit if vulns found |
+| Manifest Edit Gate | onBeforeToolCall | Gate manifest edits |
+| Post-Install Scan | onAfterToolCall | SBOM after package install |
+| Session Summary | onSessionStart | Vulnerability dashboard |
+| Context Inject | onBeforePrompt | Inject vuln context |
+| Stop Reminder | onSessionEnd | Remind about unresolved vulns |
+
+After install, register the plugin in `.neovate/plugins/`:
+
+```bash
+cp hooks/ts/neovate-plugin.ts .neovate/plugins/vulnetix.ts
+```
+
+See [Hooks documentation](../../hooks/) for details on each hook.
+
 ## Verify Installation
 
 Run the dashboard skill to confirm everything is working:
