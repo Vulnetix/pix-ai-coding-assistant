@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "pre_run_command": [
+      {
+        "command": "bash ./hooks/pre-commit-scan.sh"
+      }
+    ],
+    "pre_write_code": [
+      {
+        "command": "bash ./hooks/manifest-edit-scan.sh"
+      }
+    ],
+    "post_run_command": [
+      {
+        "command": "bash ./hooks/post-install-scan.sh"
+      }
+    ],
+    "post_cascade_response": [
+      {
+        "command": "bash ./hooks/stop-reminder.sh"
+      }
+    ],
+    "pre_user_prompt": [
+      {
+        "command": "bash ./hooks/vuln-context-inject.sh"
+      }
+    ]
+  }
+}

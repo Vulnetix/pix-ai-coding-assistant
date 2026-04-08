@@ -26,10 +26,28 @@ The plugin registers the following into `.windsurf/skills`:
 
 | Component | Count | Details |
 |-----------|-------|---------|
-| **Hooks** | 6 | Pre-commit scan, manifest edit gate, post-install scan, session dashboard, stop reminder, vuln context inject |
+| **Hooks** | 5 | Pre-commit scan, manifest edit gate, post-install scan, stop reminder, vuln context inject |
 | **Skills** | 6 | `package-search`, `exploits`, `fix`, `vuln`, `exploits-search`, `remediation` |
 | **Commands** | 4 | `vdb-vuln`, `vdb-vulns`, `vdb-exploits-search`, `vdb-remediation` |
 | **Agents** | 1 | `bulk-triage` — parallel vulnerability triage and prioritization |
+
+## Native Hooks
+
+Windsurf supports hooks natively via project-level `.windsurf/hooks.json`. The plugin ships `hooks.windsurf.json` pre-configured for Windsurf's hook system. After install, hooks are registered automatically — no manual configuration needed.
+
+The following events are wired up:
+
+| Hook | Event | Action |
+|------|-------|--------|
+| Pre-Commit Scan | pre_run_command | Scan before git commit |
+| Manifest Edit Gate | pre_write_code | Gate manifest edits |
+| Post-Install Scan | post_run_command | SBOM after npm/pip/go install |
+| Stop Reminder | post_cascade_response | Remind about unresolved vulns |
+| Context Inject | pre_user_prompt | Inject vuln context |
+
+Windsurf has no session start event, so the session summary hook is not wired.
+
+See [Hooks documentation](../../hooks/) for details on each hook.
 
 ## Verify Installation
 
