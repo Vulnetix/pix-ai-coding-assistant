@@ -31,7 +31,7 @@ For example:
 /vulnetix:vdb-vuln CVE-2021-44228
 ```
 
-Commands are marked `disable-model-invocation: true`, meaning Claude Code will never call them autonomously -- they only run when you invoke them explicitly.
+Commands are marked `disable-model-invocation: true`, meaning your coding agent will never call them autonomously -- they only run when you invoke them explicitly.
 
 ## Output
 

@@ -1,12 +1,12 @@
-# Vulnetix Claude Code Plugin — System Reference
+# Vulnetix AI Coding Agent Plugin — System Reference
 
-This is the official Claude Code plugin for Vulnetix vulnerability intelligence. It extends Claude Code with security skills, hooks, commands, and agents that query the Vulnetix VDB API via the Vulnetix CLI.
+This is the official Vulnetix plugin for AI coding agents. It extends your coding agent with security skills, hooks, commands, and agents that query the Vulnetix VDB API via the Vulnetix CLI.
 
 ## Architecture
 
 ```mermaid
 graph TB
-    subgraph "Claude Code Plugin"
+    subgraph "Vulnetix Plugin"
         direction TB
         SK[Skills<br/>7 LLM-guided workflows]
         CMD[Commands<br/>4 deterministic CLI wrappers]
