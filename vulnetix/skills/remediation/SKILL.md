@@ -62,6 +62,24 @@ When `gh` CLI is available (check with `gh auth status 2>/dev/null`), query Depe
 
 ## Workflow
 
+### Step 0: Ensure Vulnetix CLI is Available
+
+Before running any `vulnetix` command, verify the CLI is callable:
+
+```bash
+command -v vulnetix &>/dev/null && vulnetix --version
+```
+
+If `vulnetix` is not found, install it automatically using this priority:
+
+1. **Homebrew** (if `brew` exists): `brew install vulnetix/tap/vulnetix`
+2. **Scoop** (Windows, if `scoop` exists): `scoop bucket add vulnetix https://github.com/Vulnetix/scoop-bucket && scoop install vulnetix`
+3. **Nix** (if NixOS or `nix` exists): `nix profile install github:Vulnetix/cli`
+4. **GitHub releases** (if `curl`/`wget` exist): Download the correct binary for the OS/arch from `https://github.com/Vulnetix/cli/releases/latest`, extract to `~/.local/bin/`, and `chmod +x`
+5. **Go install** (if `go` exists): `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`
+
+After each install attempt, verify with `command -v vulnetix`. If all methods fail, inform the user and abort. Do not proceed without the CLI.
+
 ### Step 1: Load Memory and Detect Repository Context
 
 1. Load `.vulnetix/memory.yaml` as described above
@@ -249,16 +267,27 @@ Based on the remediation plan, present concrete actions:
 
 1. **If registry fix available:** Show exact manifest edit (same diff format as `/vulnetix:fix`) with the fix version from the remediation plan. Offer to apply it.
 2. **If source fix only (no registry release):** Note that the fix requires building from source or waiting for a release. Link to the commit/PR.
-3. **If workaround only:** Present the workaround steps with effectiveness score. Note: "No patch available yet -- workaround is interim mitigation."
+3. **If workaround only:** Present the workaround steps with effectiveness score. Note: "No patch available yet -- workaround is interim mitigation." Also fetch Snort rules: `vulnetix vdb traffic-filters "$ARGUMENTS" -o json` — if available, present them as a network-level defense alongside the workaround.
 4. **If distribution patch:** Provide the package manager command (e.g., `apt-get update && apt-get install --only-upgrade <package>`)
 5. **Test commands:** Suggest running tests after applying the fix
 6. **Re-scan:** Suggest `vulnetix vdb vuln <vuln-id>` to verify the fix resolved the vulnerability
 7. **Rollback guidance:** If the fix introduces breaking changes, note the backup/rollback approach
 
+**Snort Rules (when no patch or low Safe Harbour):**
+
+When no registry fix is available, Safe Harbour confidence is low (< 0.35), or the user's triage choice is not a patch (e.g., `risk-accepted`, `deferred`, `mitigated`), fetch and present Snort rules:
+
+```bash
+vulnetix vdb traffic-filters "$ARGUMENTS" -o json
+```
+
+If rules are returned, display each rule's `rawText` for direct IDS/IPS deployment. Note `signatureSeverity` and `confidence`. Present as: "While no patch is available, these IDS/IPS rules can detect and block exploit traffic targeting this vulnerability."
+
 **Cross-references:**
 - `"Run /vulnetix:exploits $ARGUMENTS for exploit intelligence and threat modeling"`
 - `"Run /vulnetix:vuln $ARGUMENTS for full vulnerability details"`
 - `"Run /vulnetix:exploits-search --ecosystem <eco> to discover related exploited vulnerabilities"`
+- `"Run vulnetix vdb traffic-filters $ARGUMENTS for Snort rules to filter malicious traffic"`
 
 ### Step 7: Update Vulnerability Memory
 
@@ -284,7 +313,7 @@ Based on the remediation plan, present concrete actions:
 - If `vulnetix vdb remediation plan` returns an error, fall back to `vulnetix vdb fixes "$ARGUMENTS" -o json` (V1 endpoint) and present basic fix data. Note that V2 enrichment (workarounds, CWE guidance, verification steps) is unavailable.
 - If the vuln ID is not found, suggest checking the format and provide examples
 - If no package context can be determined from the repo, run without context flags and note that guidance is generic rather than repo-specific
-- If no fixes, workarounds, or patches are available, state clearly: "No remediation options are currently available for this vulnerability. Consider risk acceptance or component removal."
+- If no fixes, workarounds, or patches are available, **automatically check for Snort rules** by running `vulnetix vdb traffic-filters "$ARGUMENTS" -o json`. If rules exist, present them as an immediate network-level mitigation with deployment guidance for Snort/Suricata. If no rules either, state clearly: "No remediation options are currently available for this vulnerability. Consider risk acceptance or component removal."
 - If `.vulnetix/memory.yaml` cannot be written, warn but do not block
 
 ## Important Reminders

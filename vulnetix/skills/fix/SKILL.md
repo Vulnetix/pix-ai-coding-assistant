@@ -575,6 +575,27 @@ Before anything else:
 6. If the memory file has a prior `secret_scanning` section, compare and flag state changes
 7. Store secret scanning findings for persistence in Step 8
 
+### Step 0f: Ensure Vulnetix CLI is Available
+
+Before running any `vulnetix` command, verify the CLI is callable:
+
+```bash
+command -v vulnetix &>/dev/null && vulnetix --version
+```
+
+If `vulnetix` is not found, install it automatically using this priority:
+
+1. **Homebrew** (if `brew` exists): `brew install vulnetix/tap/vulnetix`
+2. **Scoop** (Windows, if `scoop` exists): `scoop bucket add vulnetix https://github.com/Vulnetix/scoop-bucket && scoop install vulnetix`
+3. **Nix** (if NixOS or `nix` exists): `nix profile install github:Vulnetix/cli`
+4. **GitHub releases** (if `curl`/`wget` exist): Download the correct binary for the OS/arch from `https://github.com/Vulnetix/cli/releases/latest`, extract to `~/.local/bin/`, and `chmod +x`
+5. **Go install** (if `go` exists): `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`
+
+After each install attempt, verify with `command -v vulnetix`. If all methods fail, inform the user:
+> Vulnetix CLI could not be installed automatically. Install manually: `brew install vulnetix/tap/vulnetix` (macOS/Linux), `scoop install vulnetix` (Windows), or download from https://github.com/Vulnetix/cli/releases
+
+**Abort the skill if the CLI cannot be made available.** Do not proceed with partial results.
+
 ### Step 1: Fetch Fix Data
 
 Run the Vulnetix VDB fixes command for both V1 and V2 endpoints:
@@ -769,10 +790,15 @@ If no fix is available yet, provide temporary mitigations:
 - **Configuration changes** (disable vulnerable feature, enable safeguards)
 - **Input validation** (sanitize untrusted input)
 - **Network isolation** (firewall rules, rate limiting)
+- **IDS/IPS Snort rules** — fetch traffic filter rules to detect and block exploit traffic:
+  ```bash
+  vulnetix vdb traffic-filters "$ARGUMENTS" -o json
+  ```
+  If rules are returned, present them to the user with deployment guidance (Snort, Suricata, or compatible IDS/IPS). Display the `rawText` field for each rule so the user can copy them directly into their IDS configuration. Note the `signatureSeverity` and `confidence` of each rule.
 - **Vendor-recommended workarounds** (from advisory)
 - **Selective imports** — refactor imports to avoid loading the vulnerable code path (see Step 7)
 
-**Action:** Apply configuration changes to relevant files.
+**Action:** Apply configuration changes to relevant files. If Snort rules are available, present them prominently as an immediate network-level mitigation.
 
 ---
 
@@ -1066,7 +1092,7 @@ GitHub security sync: Dependabot <state>, CodeQL <N alerts>, Secret scanning <N 
 
 ## Error Handling
 
-- If `vulnetix vdb fixes` returns no results, inform the user that no official fix is available yet and suggest workarounds or monitoring. Still record the vuln in `.vulnetix/memory.yaml` with `status: under_investigation`.
+- If `vulnetix vdb fixes` returns no results, inform the user that no official fix is available yet. **Automatically check for Snort rules** by running `vulnetix vdb traffic-filters "$ARGUMENTS" -o json` — if rules exist, present them as an immediate network-level mitigation. Also suggest workarounds or monitoring. Still record the vuln in `.vulnetix/memory.yaml` with `status: under_investigation`.
 - If the package is not found in the repository, confirm with the user whether it's a transitive dependency. Record as `status: not_affected`, `justification: component_not_present` if confirmed absent.
 - If manifest format is complex (Gradle, multi-module Maven), ask the user which file to edit
 - If breaking changes are expected, warn the user and recommend testing thoroughly
@@ -1088,3 +1114,4 @@ GitHub security sync: Dependabot <state>, CodeQL <N alerts>, Secret scanning <N 
 - If exploits are known, suggest running `/vulnetix:exploits $ARGUMENTS` first to understand impact
 - After fixing, suggest re-running `/vulnetix:package-search` if adding new dependencies as alternatives
 - The `/vulnetix:exploits` and `/vulnetix:package-search` skills also read and contribute to `.vulnetix/memory.yaml` — decisions made in any skill are visible to all others
+- **When no patch is available, Safe Harbour is low (< 0.35), or the user's triage decision is not a patch** (e.g., `risk-accepted`, `deferred`, `mitigated`), automatically fetch Snort rules via `vulnetix vdb traffic-filters "$ARGUMENTS" -o json` and offer them as an interim network-level defense. Present each rule's `rawText` for direct IDS/IPS deployment.

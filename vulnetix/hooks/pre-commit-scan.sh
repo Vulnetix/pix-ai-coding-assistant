@@ -214,44 +214,9 @@ if [[ ${#MANIFESTS_TO_SCAN[@]} -eq 0 ]]; then
     exit 0
 fi
 
-# Check if vulnetix CLI is installed — probe PATH, shell rc files, and common locations
-VULNETIX_CMD=""
-if command -v vulnetix &>/dev/null; then
-    VULNETIX_CMD="vulnetix"
-else
-    # Probe common install locations (Homebrew on Linux/macOS, Go, local bin)
-    for candidate in \
-        "/home/linuxbrew/.linuxbrew/bin/vulnetix" \
-        "/opt/homebrew/bin/vulnetix" \
-        "/usr/local/bin/vulnetix" \
-        "${HOME}/.local/bin/vulnetix" \
-        "${HOME}/go/bin/vulnetix" \
-        "${HOME}/.cargo/bin/vulnetix"; do
-        if [[ -x "$candidate" ]]; then
-            VULNETIX_CMD="$candidate"
-            break
-        fi
-    done
-
-    # If still not found, try sourcing shell rc to pick up PATH modifications
-    if [[ -z "$VULNETIX_CMD" ]]; then
-        SHELL_RC=""
-        case "${SHELL:-}" in
-            */zsh)  SHELL_RC="${HOME}/.zshrc" ;;
-            */bash) SHELL_RC="${HOME}/.bashrc" ;;
-            *)      SHELL_RC="${HOME}/.bashrc" ;;
-        esac
-        if [[ -f "$SHELL_RC" ]]; then
-            # Source in a subshell to avoid polluting current environment
-            VULNETIX_CMD=$(bash -c "source '$SHELL_RC' 2>/dev/null && command -v vulnetix" 2>/dev/null || true)
-        fi
-    fi
-
-    if [[ -z "$VULNETIX_CMD" ]]; then
-        echo '{"systemMessage": "Vulnetix CLI not found. Install with: `curl -fsSL https://cli.vulnetix.com/install.sh | bash`. If already installed via Homebrew, run `! source ~/.bashrc` in this session to update your PATH."}'
-        exit 0
-    fi
-fi
+# Find or auto-install vulnetix CLI
+source "$(dirname "$0")/ensure-vulnetix-cli.sh"
+ensure_vulnetix_cli || exit 0
 
 # Check API health and authentication
 STATUS_JSON=$("$VULNETIX_CMD" vdb status -o json 2>/dev/null)

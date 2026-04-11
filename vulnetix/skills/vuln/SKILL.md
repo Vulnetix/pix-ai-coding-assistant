@@ -16,6 +16,24 @@ This skill serves two purposes based on the argument provided:
 
 **This skill does not modify application code** -- it only updates `.vulnetix/memory.yaml` to track findings. Use `/vulnetix:fix` for remediation, `/vulnetix:exploits` for exploit analysis, or `/vulnetix:remediation` for a context-aware remediation plan.
 
+## CLI Availability
+
+Before running any `vulnetix` command, verify the CLI is callable:
+
+```bash
+command -v vulnetix &>/dev/null && vulnetix --version
+```
+
+If `vulnetix` is not found, install it automatically using this priority:
+
+1. **Homebrew** (if `brew` exists): `brew install vulnetix/tap/vulnetix`
+2. **Scoop** (Windows, if `scoop` exists): `scoop bucket add vulnetix https://github.com/Vulnetix/scoop-bucket && scoop install vulnetix`
+3. **Nix** (if NixOS or `nix` exists): `nix profile install github:Vulnetix/cli`
+4. **GitHub releases** (if `curl`/`wget` exist): Download the correct binary for the OS/arch from `https://github.com/Vulnetix/cli/releases/latest`, extract to `~/.local/bin/`, and `chmod +x`
+5. **Go install** (if `go` exists): `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`
+
+After each install attempt, verify with `command -v vulnetix`. If all methods fail, inform the user and abort. Do not proceed without the CLI.
+
 ## Argument Detection
 
 Determine the mode from the argument:
@@ -280,6 +298,7 @@ Total: N known vulnerabilities (M affect your version)
 **Actionable recommendations:**
 - Critical/high affecting installed version: `"Run /vulnetix:fix <vuln-id> to remediate"` or `"Run /vulnetix:remediation <vuln-id> for a context-aware remediation plan"`
 - Vulns with exploit signals: `"Run /vulnetix:exploits <vuln-id> for exploit analysis"`
+- Vulns without fixes or with non-patch decisions: `"Run vulnetix vdb traffic-filters <vuln-id> for Snort rules to block exploit traffic"`
 - Any vuln: `"Run /vulnetix:vuln <vuln-id> for detailed vulnerability info"`
 - Broad discovery: `"Run /vulnetix:exploits-search --ecosystem <eco> to find exploited vulnerabilities in your ecosystem"`
 

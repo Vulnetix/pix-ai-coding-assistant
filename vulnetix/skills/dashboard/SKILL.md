@@ -100,6 +100,7 @@ For each open vulnerability (up to 5), suggest a next action based on its state:
 
 - Has no `threat_model` or `cwss`: `"/vulnetix:exploits <id>"` -- get exploit analysis and priority scoring
 - Has `cwss` but no fix applied: `"/vulnetix:fix <id>"` -- get fix intelligence
+- Has decision `risk-accepted`, `deferred`, or `mitigated` (non-patch): `"vulnetix vdb traffic-filters <id>"` -- get Snort rules for network-level mitigation
 - General: `"/vulnetix:remediation <id>"` -- get a full remediation plan
 
 If there are more than 5 open vulns, add: `"Use /vulnetix:exploits-search to find exploited vulnerabilities across your ecosystem."`
