@@ -119,27 +119,9 @@ if [[ -z "$PACKAGES" ]]; then
     exit 0
 fi
 
-# Find the vulnetix CLI
-VULNETIX_CMD=""
-if command -v vulnetix &>/dev/null; then
-    VULNETIX_CMD="vulnetix"
-else
-    for candidate in \
-        "/home/linuxbrew/.linuxbrew/bin/vulnetix" \
-        "/opt/homebrew/bin/vulnetix" \
-        "/usr/local/bin/vulnetix" \
-        "${HOME}/.local/bin/vulnetix" \
-        "${HOME}/go/bin/vulnetix"; do
-        if [[ -x "$candidate" ]]; then
-            VULNETIX_CMD="$candidate"
-            break
-        fi
-    done
-fi
-
-if [[ -z "$VULNETIX_CMD" ]]; then
-    exit 0
-fi
+# Find or auto-install vulnetix CLI
+source "$(dirname "$0")/ensure-vulnetix-cli.sh"
+ensure_vulnetix_cli || exit 0
 
 # Check API health (quick check)
 STATUS_JSON=$("$VULNETIX_CMD" vdb status -o json 2>/dev/null)
@@ -192,7 +174,8 @@ if [[ $TOTAL_VULNS -gt 0 ]]; then
     MESSAGE="${MESSAGE}**Options:**\n"
     MESSAGE="${MESSAGE}1. Run \`/vulnetix:fix <vuln-id>\` to see fix options and remediation steps\n"
     MESSAGE="${MESSAGE}2. Run \`/vulnetix:package-search <package>\` to search for safer alternatives\n"
-    MESSAGE="${MESSAGE}3. Proceed and accept the risk (the edit will not be blocked)\n"
+    MESSAGE="${MESSAGE}3. Run \`vulnetix vdb traffic-filters <vuln-id>\` for Snort rules to block exploit traffic while a fix is pending\n"
+    MESSAGE="${MESSAGE}4. Proceed and accept the risk (the edit will not be blocked)\n"
 
     FORMATTED=$(printf "%b" "$MESSAGE")
     jq -n --arg msg "$FORMATTED" '{"systemMessage": $msg}'

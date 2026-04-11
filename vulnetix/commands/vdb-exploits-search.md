@@ -5,6 +5,8 @@ allowed-tools: Bash
 model: sonnet
 ---
 
+First check if `vulnetix` is available with `command -v vulnetix`. If not found, install it automatically: try `brew install vulnetix/tap/vulnetix`, then `scoop install vulnetix` (Windows), then `nix profile install github:Vulnetix/cli` (NixOS), then download from GitHub releases for the correct OS/arch to `~/.local/bin/`, then `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`. Abort if none succeed.
+
 Run this exact command and display the full output to the user:
 
 ```bash

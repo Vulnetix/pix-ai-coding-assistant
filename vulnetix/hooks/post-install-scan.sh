@@ -94,27 +94,9 @@ if [[ "$IS_INSTALL" != "true" ]]; then
     exit 0
 fi
 
-# Find the vulnetix CLI
-VULNETIX_CMD=""
-if command -v vulnetix &>/dev/null; then
-    VULNETIX_CMD="vulnetix"
-else
-    for candidate in \
-        "/home/linuxbrew/.linuxbrew/bin/vulnetix" \
-        "/opt/homebrew/bin/vulnetix" \
-        "/usr/local/bin/vulnetix" \
-        "${HOME}/.local/bin/vulnetix" \
-        "${HOME}/go/bin/vulnetix"; do
-        if [[ -x "$candidate" ]]; then
-            VULNETIX_CMD="$candidate"
-            break
-        fi
-    done
-fi
-
-if [[ -z "$VULNETIX_CMD" ]]; then
-    exit 0
-fi
+# Find or auto-install vulnetix CLI
+source "$(dirname "$0")/ensure-vulnetix-cli.sh"
+ensure_vulnetix_cli || exit 0
 
 # Check API health
 STATUS_JSON=$("$VULNETIX_CMD" vdb status -o json 2>/dev/null)
@@ -183,7 +165,7 @@ if [[ $TOTAL_VULNS -gt 0 ]]; then
         fi
     done < <(printf "%b" "$VULN_LINES_ALL" | sort -u)
 
-    MESSAGE="${MESSAGE}\nRun \`/vulnetix:fix <vuln-id>\` to see remediation options or \`/vulnetix:exploits <vuln-id>\` for exploit analysis."
+    MESSAGE="${MESSAGE}\nRun \`/vulnetix:fix <vuln-id>\` to see remediation options, \`/vulnetix:exploits <vuln-id>\` for exploit analysis, or \`vulnetix vdb traffic-filters <vuln-id>\` for IDS/IPS Snort rules to filter malicious traffic while a fix is pending."
 
     FORMATTED=$(printf "%b" "$MESSAGE")
     jq -n --arg msg "$FORMATTED" '{"systemMessage": $msg}'

@@ -33,7 +33,7 @@ fi
 if [[ ! -f "$MEMORY_FILE" ]]; then
     # No memory — suggest looking up the vuln
     FIRST_ID=$(echo "$VULN_IDS" | head -1)
-    jq -n --arg msg "Vulnetix: ${FIRST_ID} mentioned — no prior data in memory. Run \`/vulnetix:vuln ${FIRST_ID}\` to look it up." '{"systemMessage": $msg}'
+    jq -n --arg msg "Vulnetix: ${FIRST_ID} mentioned — no prior data in memory. Run \`/vulnetix:vuln ${FIRST_ID}\` to look it up, or \`vulnetix vdb traffic-filters ${FIRST_ID}\` for Snort rules." '{"systemMessage": $msg}'
     exit 0
 fi
 

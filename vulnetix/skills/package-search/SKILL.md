@@ -135,6 +135,24 @@ When `gh` CLI is available, check for secret scanning alerts relevant to package
 2. If active secrets exist alongside a package that handles credentials, flag: "Active secrets detected in this repo — adding/upgrading this package should include a secret rotation review"
 3. If a prior memory entry has a `secret_scanning` section, surface it in Known History
 
+## CLI Availability
+
+Before running any `vulnetix` command, verify the CLI is callable:
+
+```bash
+command -v vulnetix &>/dev/null && vulnetix --version
+```
+
+If `vulnetix` is not found, install it automatically using this priority:
+
+1. **Homebrew** (if `brew` exists): `brew install vulnetix/tap/vulnetix`
+2. **Scoop** (Windows, if `scoop` exists): `scoop bucket add vulnetix https://github.com/Vulnetix/scoop-bucket && scoop install vulnetix`
+3. **Nix** (if NixOS or `nix` exists): `nix profile install github:Vulnetix/cli`
+4. **GitHub releases** (if `curl`/`wget` exist): Download the correct binary for the OS/arch from `https://github.com/Vulnetix/cli/releases/latest`, extract to `~/.local/bin/`, and `chmod +x`
+5. **Go install** (if `go` exists): `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`
+
+After each install attempt, verify with `command -v vulnetix`. If all methods fail, inform the user and abort. Do not proceed without the CLI.
+
 ## Workflow
 
 ### Step 1: Detect Repository Ecosystems

@@ -38,7 +38,7 @@ fi
 # Build reminder (keep it brief — this fires on every stop)
 if [[ $OPEN_COUNT -eq 1 ]]; then
     VULN_ID=$(printf "%b" "$OPEN_VULNS" | head -1 | tr -d '[:space:]')
-    MESSAGE="Reminder: ${VULN_ID} is still unresolved. Run \`/vulnetix:fix ${VULN_ID}\` to see remediation options."
+    MESSAGE="Reminder: ${VULN_ID} is still unresolved. Run \`/vulnetix:fix ${VULN_ID}\` to see remediation options or \`vulnetix vdb traffic-filters ${VULN_ID}\` for Snort rules to mitigate while unpatched."
 else
     MESSAGE="Reminder: ${OPEN_COUNT} vulnerabilities still unresolved."
     # Show up to 3

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -o pipefail
 
 # SessionStart hook — display vulnerability dashboard on session start
 # Reads .vulnetix/memory.yaml and outputs a brief status summary.
@@ -31,7 +31,7 @@ LAST_SCAN=$(grep "last_scanned:" "$MEMORY_FILE" 2>/dev/null | tail -1 | sed 's/.
 MANIFEST_COUNT=$(grep "scan_source:" "$MEMORY_FILE" 2>/dev/null | wc -l || echo "0")
 
 # Only output if there's meaningful data
-OPEN=$((AFFECTED + INVESTIGATING))
+OPEN=$(( ${AFFECTED:-0} + ${INVESTIGATING:-0} ))
 if [[ $TOTAL -le 0 ]] && [[ $MANIFEST_COUNT -le 0 ]]; then
     exit 0
 fi

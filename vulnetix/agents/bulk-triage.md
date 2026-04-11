@@ -18,6 +18,24 @@ You will receive a list of vulnerability IDs (CVE, GHSA, or other formats) to tr
 - A user providing a list of vuln IDs
 - The `.vulnetix/memory.yaml` file (vulns with `status: under_investigation`)
 
+## CLI Availability
+
+Before running any `vulnetix` command, verify the CLI is callable:
+
+```bash
+command -v vulnetix &>/dev/null && vulnetix --version
+```
+
+If `vulnetix` is not found, install it automatically using this priority:
+
+1. **Homebrew** (if `brew` exists): `brew install vulnetix/tap/vulnetix`
+2. **Scoop** (Windows, if `scoop` exists): `scoop bucket add vulnetix https://github.com/Vulnetix/scoop-bucket && scoop install vulnetix`
+3. **Nix** (if NixOS or `nix` exists): `nix profile install github:Vulnetix/cli`
+4. **GitHub releases** (if `curl`/`wget` exist): Download the correct binary for the OS/arch from `https://github.com/Vulnetix/cli/releases/latest`, extract to `~/.local/bin/`, and `chmod +x`
+5. **Go install** (if `go` exists): `go install github.com/Vulnetix/cli/cmd/vulnetix@latest`
+
+After each install attempt, verify with `command -v vulnetix`. If all methods fail, inform the user and abort. Do not proceed without the CLI.
+
 ## Workflow
 
 ### Step 1: Gather vuln IDs
@@ -76,6 +94,16 @@ For each vulnerability, compute a priority score on a **0-10 scale** and assign 
 
 Store the computed score in `CWSS.Score` and the factor breakdown in `CWSS.Factors` (if hybrid).
 
+### Step 4b: Check Snort Rules availability
+
+For each vulnerability (especially those without a fix or with P1/P2 priority), check for available IDS/IPS rules:
+
+```bash
+vulnetix vdb traffic-filters "<VULN_ID>" -o json --disable-memory
+```
+
+If rules are returned, note the count and highest `signatureSeverity` for the triage report. This provides an interim mitigation option for vulns without patches.
+
 ### Step 5: Check Dependabot context
 
 If `gh` CLI is available (`gh auth status 2>/dev/null`):
@@ -97,11 +125,11 @@ Analyzed: N vulnerabilities | Date: YYYY-MM-DD
 
 ### P1 — Act Now (score ≥9.0)
 
-| Vuln ID | Package | Severity | CWSS | EPSS | Exploits | In Repo? | Dependabot |
-|---------|---------|----------|------|------|----------|----------|------------|
-| CVE-... | express | Critical | 9.2 | 0.97 | 5 (Metasploit) | Yes (direct) | Alert #42 open |
+| Vuln ID | Package | Severity | CWSS | EPSS | Exploits | In Repo? | Snort Rules | Dependabot |
+|---------|---------|----------|------|------|----------|----------|-------------|------------|
+| CVE-... | express | Critical | 9.2 | 0.97 | 5 (Metasploit) | Yes (direct) | 3 rules | Alert #42 open |
 
-**Recommended action:** `/vulnetix:fix CVE-...`
+**Recommended action:** `/vulnetix:fix CVE-...` or `vulnetix vdb traffic-filters CVE-...` for IDS rules
 
 ### P2 — Plan This Sprint (7.0-8.9)
 
