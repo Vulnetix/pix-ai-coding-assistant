@@ -62,7 +62,7 @@ sequenceDiagram
 ```
 vulnetix/
 ├── .claude-plugin/
-│   └── plugin.json              # Plugin metadata (name: "vulnetix", v1.2.1)
+│   └── plugin.json              # Plugin metadata (name: "vulnetix", v1.2.2)
 ├── skills/                      # LLM-guided workflows (SKILL.md per skill)
 │   ├── dashboard/SKILL.md       # /vulnetix:dashboard
 │   ├── exploits/SKILL.md        # /vulnetix:exploits <vuln-id>
