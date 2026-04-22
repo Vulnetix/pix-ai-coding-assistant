@@ -12,6 +12,38 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 
 This installs the Vulnetix security skills into your project's `.copilot/skills` directory.
 
+## Via GitHub CLI (Preview)
+
+GitHub CLI v2.90.0+ includes `gh skill`, a dedicated skills manager for GitHub Copilot and other agents. It adds version pinning, content-addressed change detection, and centralized update management on top of the standard skills install.
+
+Requires [GitHub CLI](https://cli.github.com/) v2.90.0+.
+
+Search for the plugin:
+
+```
+gh skill search vulnetix
+```
+
+Install individual skills (note: for the full plugin including hooks, commands, and the bulk-triage agent, use `npx skills add` above):
+
+```
+gh skill install Vulnetix/pix-ai-coding-assistant dashboard
+gh skill install Vulnetix/pix-ai-coding-assistant exploits
+gh skill install Vulnetix/pix-ai-coding-assistant exploits-search
+gh skill install Vulnetix/pix-ai-coding-assistant fix
+gh skill install Vulnetix/pix-ai-coding-assistant package-search
+gh skill install Vulnetix/pix-ai-coding-assistant remediation
+gh skill install Vulnetix/pix-ai-coding-assistant vuln
+```
+
+Pin to a specific release for reproducible installs:
+
+```
+gh skill install Vulnetix/pix-ai-coding-assistant dashboard@v1.2.2
+```
+
+> `gh skill` is in preview and subject to change. See [GitHub CLI documentation](https://cli.github.com/manual/gh_skill) for the full reference.
+
 ## Prerequisites
 
 Before running the install command:
@@ -67,6 +99,12 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 This overwrites existing files with the latest version. Your `.vulnetix/memory.yaml` and cached data are not affected.
+
+If you installed individual skills via `gh skill`, update all at once:
+
+```
+gh skill update
+```
 
 ## Uninstall
 

@@ -4,6 +4,24 @@ weight: 1
 description: "Install the Vulnetix security plugin for Claude Code."
 ---
 
+## Via GitHub CLI (Preview)
+
+GitHub CLI v2.90.0+ supports installing individual skills directly via `gh skill`:
+
+```
+gh skill install Vulnetix/pix-ai-coding-assistant dashboard --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant exploits --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant exploits-search --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant fix --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant package-search --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant remediation --agent claude-code
+gh skill install Vulnetix/pix-ai-coding-assistant vuln --agent claude-code
+```
+
+For the complete plugin (hooks, commands, and bulk-triage agent), use the Marketplace method below. Keep `gh skill`-installed skills current with `gh skill update`.
+
+> `gh skill` is in preview. See [GitHub CLI documentation](https://cli.github.com/manual/gh_skill) for the full reference.
+
 ## Install via Marketplace (Recommended)
 
 Add the Vulnetix marketplace to Claude Code:

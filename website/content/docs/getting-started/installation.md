@@ -12,6 +12,8 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 
 This works with any supported agent. Skills are installed into the correct directory automatically.
 
+GitHub Copilot users can also use the [GitHub CLI skills manager](../../../docs/install/copilot/#via-github-cli-preview) (`gh skill`, requires v2.90.0+) for version-pinned installs and centralized update management.
+
 For agent-specific instructions, see the [Install](/docs/install/) section — it covers all 41 supported agents with full setup details.
 
 ## What Gets Installed

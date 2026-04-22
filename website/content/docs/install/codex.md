@@ -12,6 +12,22 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 
 This installs the Vulnetix security skills into your project's `.codex/skills` directory.
 
+### Via GitHub CLI (Preview)
+
+GitHub CLI v2.90.0+ can install individual skills with version pinning via `gh skill`:
+
+```
+gh skill install Vulnetix/pix-ai-coding-assistant dashboard --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant exploits --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant fix --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant vuln --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant exploits-search --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant package-search --agent codex
+gh skill install Vulnetix/pix-ai-coding-assistant remediation --agent codex
+```
+
+Note: `gh skill` installs skills only. For the full plugin (hooks, commands, and bulk-triage agent), use `npx skills add` above. Keep skills current with `gh skill update`.
+
 ## Prerequisites
 
 Before running the install command:
