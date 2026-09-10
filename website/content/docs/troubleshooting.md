@@ -124,41 +124,30 @@ The colon separates the plugin name from the skill/command name. A space between
 
 ## CLI Not Found
 
-**Symptoms:** Hooks exit silently. Running `vulnetix` in the terminal returns "command not found".
+**Symptoms:** Hooks exit silently, or the host reports that a previously
+installed version of `vulnetix` no longer exists.
 
 **Diagnostics:**
 
-The plugin hooks probe multiple locations for the `vulnetix` binary:
+The shipped hook command is always `vulnetix agent hook`. The host resolves it
+from its own `PATH` when the hook runs; the plugin does not probe or persist
+package-manager, operating-system, or user-home-specific binary locations.
 
-1. Standard PATH (`command -v vulnetix`)
-2. Homebrew on Linux (`/home/linuxbrew/.linuxbrew/bin/vulnetix`)
-3. Homebrew on macOS (`/opt/homebrew/bin/vulnetix`)
-4. System-wide (`/usr/local/bin/vulnetix`)
-5. Local bin (`~/.local/bin/vulnetix`)
-6. Go bin (`~/go/bin/vulnetix`)
-7. Cargo bin (`~/.cargo/bin/vulnetix`)
-8. Shell rc sourcing (sources `~/.bashrc` or `~/.zshrc` in a subshell)
+Confirm the host can resolve the command:
+
+```bash
+command -v vulnetix
+vulnetix --version
+```
 
 **Fixes:**
 
-- If the CLI is installed but not on your PATH, source your shell config:
+- If the CLI is installed but not on the host's `PATH`, add its bin directory
+  to the environment that starts your coding agent, then restart the agent.
 
-  ```bash
-  ! source ~/.bashrc
-  ```
-
-  or
-
-  ```bash
-  ! source ~/.zshrc
-  ```
+- If an older installation wrote an absolute, versioned binary path into the
+  host hook config, upgrade to a CLI release that writes the symbolic command
+  and run `vulnetix agent install` again. This refreshes only Vulnetix's entries
+  and leaves other host settings intact.
 
 - If the CLI is not installed, follow the [prerequisites guide](/docs/getting-started/prerequisites).
-
-- If the CLI is installed in a non-standard location, add it to your PATH:
-
-  ```bash
-  export PATH="$PATH:/path/to/vulnetix/bin"
-  ```
-
-  Add this to your shell rc file for persistence.
