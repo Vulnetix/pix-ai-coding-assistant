@@ -75,12 +75,27 @@ jobs:
     permissions:
       contents: read
     steps:
+      # The fixture is private and needs GH_MODULES_PAT. Without it this job
+      # cannot assert anything, and running the agents anyway costs money to
+      # prove nothing, so skip visibly instead of failing every scheduled run.
+      - name: Require the fixture token
+        id: gate
+        env:
+          FIXTURE_TOKEN: ${{ secrets.GH_MODULES_PAT }}
+        run: |
+          if [ -z "$FIXTURE_TOKEN" ]; then
+            echo "::warning::GH_MODULES_PAT is not set on this repository; agent-driven evals skipped"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v5
+        if: steps.gate.outputs.skip != 'true'
 
       # Not continue-on-error here: the agent-driven layers assert against the
       # fixture's ground truth, so without it this job would run at full cost
       # and prove considerably less.
       - name: Check out the fixture
+        if: steps.gate.outputs.skip != 'true'
         uses: actions/checkout@v5
         with:
           repository: Vulnetix/vulnetix-fixture-app
@@ -88,14 +103,17 @@ jobs:
           token: ${{ secrets.GH_MODULES_PAT }}
 
       - name: Install the CLI
+        if: steps.gate.outputs.skip != 'true'
         run: curl -fsSL https://cli.vulnetix.com/install.sh | sh
 
       - name: Wire the agents on this runner
+        if: steps.gate.outputs.skip != 'true'
         run: vulnetix agent install
 
       # Trigger and ground-truth layers. `--agents` with no value drives every
       # agent found on the runner; the dispatch input narrows it.
       - name: Run the evals
+        if: steps.gate.outputs.skip != 'true'
         env:
           VULNETIX_FIXTURE: ${{ github.workspace }}/.fixture-repo
           VULNETIX_API_KEY: ${{ secrets.VULNETIX_API_KEY }}
@@ -110,11 +128,13 @@ jobs:
       # Same harness, second consumer: the frames the marketing pages animate
       # come out of the runs that just had to pass their assertions.
       - name: Record the demos
+        if: steps.gate.outputs.skip != 'true'
         env:
           VULNETIX_FIXTURE: ${{ github.workspace }}/.fixture-repo
         run: node scripts/record-demos.mjs
 
       - uses: actions/upload-artifact@v4
+        if: steps.gate.outputs.skip != 'true'
         with:
           name: agent-replays
           path: recordings/
