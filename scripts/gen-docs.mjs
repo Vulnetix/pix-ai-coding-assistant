@@ -35,6 +35,8 @@ const ROOT = join(import.meta.dirname, "..");
 const SKILLS = join(ROOT, "skills");
 const AGENTS = join(ROOT, "vulnetix", "agents");
 const CONTENT = join(ROOT, "website", "content", "docs");
+const AGENT_GUIDES = join(ROOT, "website", "guides", "agents");
+const REPO = "https://github.com/Vulnetix/pix-ai-coding-assistant";
 
 const check = process.argv.includes("--check");
 
@@ -236,6 +238,42 @@ ${agents.map((a) => `| [\`${a.name}\`](${a.name}/) | ${oneLine(a.data.descriptio
 `,
 );
 
+/**
+ * An agent page is its definition, verbatim. When website/guides/agents/<name>.md
+ * exists, the page is that hand-written guide followed by the definition, its
+ * headings pushed down a level so they sit under "Agent definition". The guide
+ * carries the judgement (when it runs, what it costs, how to read its output);
+ * the definition stays the one source of what the agent is told to do.
+ */
+function demoteHeadings(markdown) {
+	let fenced = false;
+	return markdown
+		.split("\n")
+		.map((line) => {
+			if (/^\s*(```|~~~)/.test(line)) fenced = !fenced;
+			if (fenced || !/^#{1,5} /.test(line)) return line;
+			return `#${line}`;
+		})
+		.join("\n");
+}
+
+function agentPage(a) {
+	const guidePath = join(AGENT_GUIDES, `${a.name}.md`);
+	if (!existsSync(guidePath)) return a.body;
+	const guide = readFileSync(guidePath, "utf8").trim();
+	// The definition's own H1 repeats the page title; drop it.
+	const definition = a.body.replace(/^\s*# [^\n]*\n+/, "");
+	return `<!-- The text above "Agent definition" is website/guides/agents/${a.name}.md. -->
+
+${guide}
+
+## Agent definition
+
+What follows is the agent's own definition, [\`vulnetix/agents/${a.name}.md\`](${REPO}/blob/main/vulnetix/agents/${a.name}.md), as the host loads it.
+
+${demoteHeadings(definition)}`;
+}
+
 for (const [i, a] of agents.entries()) {
 	emit(
 		`agents/${a.name}.md`,
@@ -243,7 +281,7 @@ for (const [i, a] of agents.entries()) {
 
 ${BANNER}
 
-${a.body}`,
+${agentPage(a)}`,
 	);
 }
 
