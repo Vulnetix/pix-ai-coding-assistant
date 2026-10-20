@@ -12,7 +12,7 @@ needs your working tree. **Looking a vulnerability up is not in here** — that 
 the [MCP server](https://mcp.vulnetix.com/mcp) and the CLI's own subcommands, so a
 question has one answer rather than three competing descriptions of the same job.
 
-Free to start on the Community tier. No credential at all still works: reads
+Free to start on the [Community tier](https://www.vulnetix.com/features/community). No credential at all still works: reads
 succeed, the rate limit is shared, and your agent is told so in plain words rather
 than shown an error.
 

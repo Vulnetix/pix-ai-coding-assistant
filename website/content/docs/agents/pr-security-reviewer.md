@@ -114,7 +114,7 @@ The Vulnetix vulnerability database (VDB) comes in through two routes:
 
 ## Plans and limits
 
-- **It works on every plan, including Community.** The verdict rests on
+- **It works on every plan, including [Community](https://www.vulnetix.com/features/community).** The verdict rests on
   severities, secrets and the dependency check, none of which needs a paid
   plan.
 - **VDB lookups count against your daily limit.** The SCA scan and each
