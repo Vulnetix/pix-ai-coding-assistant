@@ -44,7 +44,7 @@ jobs:
           path: bearer.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   cdxgen:
     name: cdxgen (multi-ecosystem SBOM)
@@ -75,7 +75,7 @@ jobs:
           path: cdxgen.cdx.json
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   checkov:
     name: Checkov (IaC)
@@ -104,7 +104,7 @@ jobs:
           path: results.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   detect-secrets:
     name: detect-secrets (secrets)
@@ -217,7 +217,7 @@ jobs:
           path: detect-secrets-results.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   github-sbom:
     name: GitHub SBOM (SPDX)
@@ -248,7 +248,7 @@ jobs:
           path: github-sbom.spdx.json
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   gitleaks:
     name: Gitleaks (Secrets)
@@ -273,7 +273,7 @@ jobs:
           path: gitleaks.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   grype:
     name: Grype (SCA)
@@ -299,7 +299,7 @@ jobs:
           path: grype.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   kics:
     name: KICS (IaC)
@@ -319,7 +319,7 @@ jobs:
           path: kics-out/results.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   njsscan:
     name: njsscan (Node SAST)
@@ -356,7 +356,7 @@ jobs:
           path: njsscan.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   noseyparker:
     name: Nosey Parker (secrets)
@@ -389,7 +389,7 @@ jobs:
           path: noseyparker.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   opengrep:
     name: OpenGrep (SAST)
@@ -422,7 +422,7 @@ jobs:
           path: opengrep.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   osv-scanner:
     name: OSV-Scanner (SCA)
@@ -443,7 +443,7 @@ jobs:
           path: osv.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   regula:
     name: Regula (IaC policy)
@@ -475,7 +475,7 @@ jobs:
           path: regula.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   scancode:
     name: ScanCode Toolkit (license SBOM)
@@ -532,7 +532,7 @@ jobs:
           path: scancode.cdx.json
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   semgrep:
     name: Semgrep (SAST)
@@ -561,7 +561,7 @@ jobs:
           path: semgrep.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   shellcheck:
     name: ShellCheck (shell lint)
@@ -683,7 +683,7 @@ jobs:
           path: shellcheck.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   stylelint:
     name: Stylelint (CSS lint)
@@ -719,7 +719,7 @@ jobs:
           path: stylelint.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   syft:
     name: Syft (CycloneDX SBOM)
@@ -740,7 +740,7 @@ jobs:
           path: sbom.cdx.json
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   terrascan:
     name: Terrascan (Terraform)
@@ -775,7 +775,7 @@ jobs:
           path: terrascan.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   tflint:
     name: TFLint (Terraform)
@@ -810,7 +810,7 @@ jobs:
           path: tflint.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   tfsec:
     name: tfsec (Terraform)
@@ -828,7 +828,7 @@ jobs:
           path: tfsec.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   trivy-config:
     name: Trivy config (IaC/Dockerfile)
@@ -849,7 +849,7 @@ jobs:
           path: trivy-config.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   trivy-fs:
     name: Trivy (filesystem CDX + SARIF)
@@ -880,7 +880,7 @@ jobs:
             trivy-fs.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   trufflehog:
     name: TruffleHog (secrets)
@@ -1007,7 +1007,7 @@ jobs:
           path: trufflehog.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   zizmor:
     name: zizmor (GitHub Actions SAST)
@@ -1048,7 +1048,7 @@ jobs:
           path: zizmor.sarif
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 7
+          retention-days: 1
 
   publish:
     name: Publish to Vulnetix
