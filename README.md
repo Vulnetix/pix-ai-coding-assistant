@@ -142,7 +142,7 @@ OS keyring; `.netrc`.
 
 ```yaml
 agent:
-  safeHarbourStrategy: safest      # safest | stable | latest
+  safeHarbourStrategy: safest      # safest | stable | latest | rolling
   maxMajorBump: 0
   dependencyGuard:
     block: [malware, kev-critical]
