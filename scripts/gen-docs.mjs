@@ -295,7 +295,7 @@ const HOOKS = [
 		detail:
 			"Computes the Safe Harbour target for the package under the configured strategy " +
 			"(`safest`: the highest stable release Safe Harbour clears; `stable`: the stable release closest to the one in use; " +
-			"`latest`: the highest stable release; `rolling`: of the non-malware versions published on the most recent release day, " +
+			"`latest`: the highest stable release; `rolling`: of the non-malware versions published on the release day of the highest version, " +
 			"the one closest to the one in use). If what is about to land is at or better than that " +
 			"target it prints **nothing at all** — silence when the policy is satisfied is what makes " +
 			"a guard liveable. Otherwise it reports the verdict into the agent's context, and blocks " +
