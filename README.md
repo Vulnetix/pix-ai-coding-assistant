@@ -159,7 +159,7 @@ vulnerability, exploit or malware report:
 | `safest` | The highest stable release that Safe Harbour clears. A pre-release is never picked. |
 | `stable` | The stable release closest to the one you run. It can be lower than the one you run. |
 | `latest` | The highest stable release by the ecosystem's own version rules. A pre-release is never picked, and a point release on an old branch is not the latest. |
-| `rolling` | Of the cleared versions published on the most recent release day (UTC), pre-releases included, the one closest to the version you run. |
+| `rolling` | Of the non-malware versions published on the most recent release day (UTC), pre-releases and versions with known vulnerabilities included, the one closest to the version you run. |
 
 `safest` and `latest` are computed separately and today usually agree.
 
