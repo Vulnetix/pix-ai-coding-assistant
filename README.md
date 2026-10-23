@@ -151,6 +151,18 @@ agent:
     block: [secrets]
 ```
 
+All four strategies pick from versions Safe Harbour clears, meaning no known
+vulnerability, exploit or malware report:
+
+| Strategy | Target |
+|---|---|
+| `safest` | The highest stable release that Safe Harbour clears. A pre-release is never picked. |
+| `stable` | The stable release closest to the one you run. It can be lower than the one you run. |
+| `latest` | The highest stable release by the ecosystem's own version rules. A pre-release is never picked, and a point release on an old branch is not the latest. |
+| `rolling` | Of the cleared versions published on the most recent release day (UTC), pre-releases included, the one closest to the version you run. |
+
+`safest` and `latest` are computed separately and today usually agree.
+
 The defaults block only what is never the right call — a known-malicious package,
 or a critical advisory being exploited in the wild — and inform about the rest.
 `unpinned` is deliberately not warned on: `npm i axios` is how almost every

@@ -66,7 +66,7 @@ For each candidate target version:
 ## Step 4: Propose resolution
 
 Prefer (in order):
-1. **Single bump** — newest patch version that fixes the vuln and satisfies constraints
+1. **Single bump** — the version Safe Harbour picks under the repository's strategy (`safeHarbourStrategy` in `.vulnetix/agent.yaml`) that fixes the vuln and satisfies constraints; it may not be the newest release
 2. **Override** — package-manager override (npm `overrides`, pnpm `pnpm.overrides`, yarn `resolutions`)
 3. **Safe-harbour inline** — copy upstream patch into repo as first-party code (link to `fix` Type A0 path)
 4. **Workaround only** — `detection-rules <vuln-id>` while waiting for upstream

@@ -167,7 +167,7 @@ The step-by-step workflow (CLI calls, branching logic, output assembly) lives in
 
 ## Security Notes
 
-- **Always upgrade to the latest patched version** unless there are known regressions
+- **Upgrade to the version Safe Harbour picks for the repository's strategy** (`safeHarbourStrategy` in `.vulnetix/agent.yaml`: `safest`, `stable`, `latest` or `rolling`; the agent policy defaults to `safest`). Every pick is a version with no known vulnerability, exploit or malware report. `safest` is the highest stable release Safe Harbour clears. `stable` is the stable release closest to the one in use. `latest` is the highest stable release. `rolling` is the version closest to the one in use among those published on the most recent release day, pre-releases included. Safe Harbour is the realistic path and the version it picks may not be the latest release
 - If a vulnerability has a **CISA KEV due date**, prioritize it as urgent
 - For **critical/high severity** vulnerabilities, recommend immediate patching even if it requires major version bumps
 - Never downgrade to an older version as a "fix" — this may introduce other vulnerabilities

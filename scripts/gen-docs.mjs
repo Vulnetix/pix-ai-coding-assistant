@@ -294,7 +294,9 @@ const HOOKS = [
 		question: "Is the dependency about to land acceptable under this repository's Safe Harbour policy?",
 		detail:
 			"Computes the Safe Harbour target for the package under the configured strategy " +
-			"(`safest`, `stable`, `latest` or `rolling`). If what is about to land is at or better than that " +
+			"(`safest`: the highest stable release Safe Harbour clears; `stable`: the stable release closest to the one in use; " +
+			"`latest`: the highest stable release; `rolling`: of the versions published on the most recent release day, " +
+			"the one closest to the one in use). If what is about to land is at or better than that " +
 			"target it prints **nothing at all** — silence when the policy is satisfied is what makes " +
 			"a guard liveable. Otherwise it reports the verdict into the agent's context, and blocks " +
 			"only for what is never the right call: a known-malicious package, or a critical advisory " +
