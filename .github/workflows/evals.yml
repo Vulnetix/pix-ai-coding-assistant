@@ -104,7 +104,12 @@ jobs:
 
       - name: Install the CLI
         if: steps.gate.outputs.skip != 'true'
-        run: curl -fsSL https://cli.vulnetix.com/install.sh | sh
+        run: |
+          # Download to a file, never `curl | sh`: a failed download would
+          # otherwise run an empty script and pass the step.
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 \
+            -o "$RUNNER_TEMP/vulnetix-install.sh" https://cli.vulnetix.com/install.sh
+          sh "$RUNNER_TEMP/vulnetix-install.sh"
 
       - name: Wire the agents on this runner
         if: steps.gate.outputs.skip != 'true'
