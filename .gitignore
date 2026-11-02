@@ -22,8 +22,8 @@
 .env
 credentials.json
 
-# Hugo
-website/public/
-website/resources/
-website/.hugo_build.lock
 recordings/
+
+# The docs DNS Terraform went with the docs site. Local state and secrets left
+# behind in terraform/ must never be committed.
+terraform/

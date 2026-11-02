@@ -137,12 +137,11 @@ pix-ai-coding-assistant/
 │       └── evals/{evals,trigger-eval}.json
 ├── .claude/skills -> ../skills   # Claude Code follows symlinks, dedups by target
 ├── .agents/skills -> ../skills   # the interop path Codex, Cursor and Gemini read
-├── vulnetix/                     # the Claude Code plugin
-│   ├── .claude-plugin/plugin.json
-│   ├── skills -> ../skills
-│   ├── agents/                   # 5 subagents
-│   └── hooks/hooks.json          # one config, one command
-└── website/                      # Hugo docs
+└── vulnetix/                     # the Claude Code plugin
+    ├── .claude-plugin/plugin.json
+    ├── skills -> ../skills
+    ├── agents/                   # 5 subagents
+    └── hooks/hooks.json          # one config, one command
 ```
 
 One canonical copy, reached three ways. The previous layout had skills only under

@@ -21,7 +21,7 @@ question has one answer instead of three competing descriptions of the same job.
 - [Configuration](#configuration)
 - [Troubleshooting](#troubleshooting)
 - [Privacy](#privacy)
-- [Full documentation](https://ai-docs.vulnetix.com)
+- [Full documentation](https://docs.vulnetix.com/pix/)
 
 ## Install
 
@@ -203,8 +203,8 @@ Apache-2.0 — see [LICENSE](LICENSE).
 
 ## Resources
 
-- [Plugin documentation](https://ai-docs.vulnetix.com)
-- [CLI documentation](https://docs.cli.vulnetix.com/)
+- [Plugin documentation](https://docs.vulnetix.com/pix/)
+- [CLI documentation](https://docs.vulnetix.com/cli/get-started/overview/)
 - [MCP server](https://www.vulnetix.com/features/mcp-server)
 - [VDB API reference](https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec)
 - [Status](https://status.vulnetix.com)

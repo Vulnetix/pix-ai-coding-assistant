@@ -179,7 +179,7 @@ graph TD
 - **Command implementations** are markdown files in `commands/` with `disable-model-invocation: true`
 - **Hook scripts** are bash, registered in `hooks/hooks.json`, must exit 0 for informational output or non-zero to block
 - **Agent definitions** are markdown files in `agents/` with frontmatter (`name`, `description`, `effort`, `maxTurns`, `allowed-tools`, `model`)
-- **Website** is Hugo (Go templates) at `website/` — every registered feature must have a corresponding doc page under `website/content/docs/`
+- **Docs** live in [Vulnetix/platform-docs](https://github.com/Vulnetix/platform-docs) under the `/pix/` segment of https://docs.vulnetix.com. This repo has no docs site: every registered feature must have a corresponding page there
 - The canonical schema for `.vulnetix/memory.yaml` is defined in `skills/fix/references/memory-yaml-schema.md`
 - All skills share memory — coordinate writes carefully, especially in the bulk-triage agent
 
