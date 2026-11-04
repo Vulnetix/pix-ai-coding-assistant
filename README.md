@@ -2,14 +2,14 @@
   <img src="pix.svg" alt="Pix, the Vulnetix AI coding assistant" width="160">
 </p>
 
-# Pix — Vulnetix for coding agents
+# Pix: Vulnetix for coding agents
 
 Three hooks and eighteen skills. The hooks interrupt only when your agent is
 about to do something your own policy disagrees with; the skills cover the work
 that needs your working tree.
 
 Looking a vulnerability up is not in here. That is the [Vulnetix MCP
-server](https://mcp.vulnetix.com/mcp) and the CLI's own subcommands, so a
+server](https://docs.vulnetix.com/mcp-server/) and the CLI's own subcommands, so a
 question has one answer instead of three competing descriptions of the same job.
 
 ## Contents
@@ -52,7 +52,7 @@ npx skills add Vulnetix/pix-ai-coding-assistant
 ```
 
 Both work because the canonical skills live at `skills/` in the repository root,
-which is the convention each of them looks for. They install **skills only** —
+which is the convention each of them looks for. They install **skills only**;
 hooks and MCP wiring still need `vulnetix agent install`.
 
 Claude Code marketplace:
@@ -71,7 +71,7 @@ Claude Code marketplace:
 | `change-guard` | `git commit`, `git push` | Does the change about to be recorded carry a credential? |
 | `session-context` | session start, and each prompt | What did this repository's last scan find, and does the CVE you just named reach it? |
 
-All three are one command — `vulnetix agent hook` — reading the host's payload on
+All three are one command, `vulnetix agent hook`, reading the host's payload on
 stdin and writing the host's response on stdout. That is why they work on Codex
 and Claude Code alike, and why they run on native Windows, which the shell hooks
 they replaced never did.
@@ -92,17 +92,17 @@ not compose correctly alone. That is the entry requirement.
 
 | Skill | The one question |
 |---|---|
-| `dependency-choice` | I need capability X — which package, and what am I trading? |
+| `dependency-choice` | I need capability X: which package, and what am I trading? |
 | `repo-impact` | Does this CVE reach anything in *this* repository? |
 | `fix` | Apply a fix for this finding, here, safely. |
 | `verify-fix` | Did the fix actually land? |
-| `dep-resolve` | The bump is blocked by peer deps — find a compatible set. |
+| `dep-resolve` | The bump is blocked by peer deps: find a compatible set. |
 | `typosquat-check` | Is this name impersonating something, or known-malicious? |
 | `eol-check` | What here is past end of life, or about to be? |
 | `license-check` | Does anything here conflict with our licence policy? |
 | `sast-scan` `secret-scan` `iac-scan` `container-scan` | Four single-purpose local scanners. |
-| `secure-code-write` | I am about to write auth/crypto/SQL — what should I know? |
-| `detection-rules` | I cannot patch this — what do I deploy instead? |
+| `secure-code-write` | I am about to write auth/crypto/SQL: what should I know? |
+| `detection-rules` | I cannot patch this: what do I deploy instead? |
 | `exploit-test` | Prove this is or is not exploitable against my authorised target. |
 | `sbom-generate` `vex-publish` | Produce the attestations a customer or auditor asked for. |
 | `dashboard` | What have we already decided here? |
@@ -163,8 +163,8 @@ vulnerability, exploit or malware report:
 
 `safest` and `latest` are computed separately and today usually agree.
 
-The defaults block only what is never the right call — a known-malicious package,
-or a critical advisory being exploited in the wild — and inform about the rest.
+The defaults block only what is never the right call (a known-malicious package,
+or a critical advisory being exploited in the wild) and inform about the rest.
 `unpinned` is deliberately not warned on: `npm i axios` is how almost every
 install is written, so warning on it fires on nearly everything and teaches people
 to stop reading.
@@ -174,7 +174,7 @@ uninstalling it.
 
 ## Troubleshooting
 
-**The guard says nothing.** That is usually correct — it is silent when your
+**The guard says nothing.** That is usually correct: it is silent when your
 policy is satisfied. To check it is wired at all: `vulnetix agent hosts` shows
 what this CLI can configure and what it found.
 
@@ -191,7 +191,7 @@ Community or your own key.
 
 ## Privacy
 
-- No source code is sent to Vulnetix — dependency names and versions only.
+- No source code is sent to Vulnetix, only dependency names and versions.
 - Manifests are parsed locally by the CLI.
 - Secret detection runs entirely locally; nothing it finds leaves the machine.
 - Proof-of-concept exploits are never executed. `exploit-test` requires you to
@@ -199,14 +199,13 @@ Community or your own key.
 
 ## License
 
-Apache-2.0 — see [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE).
 
 ## Resources
 
 - [Plugin documentation](https://docs.vulnetix.com/pix/)
-- [CLI documentation](https://docs.vulnetix.com/cli/get-started/overview/)
+- [CLI documentation](https://docs.vulnetix.com/cli/)
 - [MCP server](https://www.vulnetix.com/features/mcp-server)
 - [VDB API reference](https://redocly.github.io/redoc/?url=https://api.vdb.vulnetix.com/v1/spec)
-- [Status](https://status.vulnetix.com)
 
 Issues: [github.com/Vulnetix/pix-ai-coding-assistant](https://github.com/Vulnetix/pix-ai-coding-assistant).
