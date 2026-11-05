@@ -27,3 +27,4 @@ recordings/
 # The docs DNS Terraform went with the docs site. Local state and secrets left
 # behind in terraform/ must never be committed.
 terraform/
+!.vulnetix/workflow.yaml

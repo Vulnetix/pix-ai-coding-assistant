@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5.1.0
 
       - name: Install skill-validator
         run: brew install agent-ecosystem/tap/skill-validator
