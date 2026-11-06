@@ -28,3 +28,4 @@ recordings/
 # behind in terraform/ must never be committed.
 terraform/
 !.vulnetix/workflow.yaml
+!.vulnetix/workflow.yaml
