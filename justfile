@@ -15,7 +15,7 @@ evals:
 
 # Seeded property tests for the eval harness helpers in scripts/.
 test:
-    node --test scripts/
+    node --test scripts/*.test.mjs
 
 # Drive real agents through the corpus. Costs money and minutes.
 evals-full agents="":

@@ -12,7 +12,7 @@
  *   record-demos.mjs feed the public marketing pages), so a drift leaks
  *   machine- or account-specific data.
  *
- * Run with `node --test scripts/`.
+ * Run with `just test`.
  */
 
 import test from "node:test";
