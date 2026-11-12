@@ -67,6 +67,11 @@ jobs:
           VULNETIX_FIXTURE: ${{ github.workspace }}/.fixture-repo
         run: node scripts/eval.mjs
 
+      # Seeded property tests for the helpers the gate relies on: stream
+      # parsing, advisory-id extraction and redaction.
+      - name: Test the harness helpers
+        run: node --test scripts/*.test.mjs
+
   agents:
     name: Agent-driven
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
